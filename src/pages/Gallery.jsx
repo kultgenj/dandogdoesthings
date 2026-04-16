@@ -4,21 +4,34 @@ import ImgSlot from '../components/ImgSlot'
 
 const GOOGLE_PHOTOS_URL = 'https://photos.google.com/share/AF1QipMH1lnWgJkZH2FUZxeIUPZYhmTMzo7WVZ1KntczVqmikEa_LRVuFXdV3xljwZVTfA?key=ellDVFdVQjJqMERRY05xT2JMcnhiUzlLV05JbWxR'
 
-// Update src values below with real image paths once photos are available.
-// The alt text tells you exactly which photo belongs in each slot.
 const PHOTOS = [
-  { id: 1, src: null, alt: 'Dan grinning in front of the Chicago skyline across Lake Michigan', category: 'chicago',    size: 'wide',   color: 'blue'  },
-  { id: 2, src: null, alt: 'Dan on the beach gazing at the horizon — stoic mode',               category: 'adventures', size: 'normal', color: 'sky'   },
-  { id: 3, src: null, alt: 'Dan screaming at the sky with the city behind him',                 category: 'zoomies',    size: 'tall',   color: 'black' },
-  { id: 4, src: null, alt: 'Dan with maximum mouth open at the lakefront',                      category: 'chaos',      size: 'normal', color: 'tan'   },
-  { id: 5, src: null, alt: 'Dan in front of the Amplitude sign',                               category: 'adventures', size: 'normal', color: 'amber' },
-  { id: 6, src: null, alt: 'Dan lounging on teal couch — aristocratic posture',                category: 'couch',      size: 'normal', color: 'teal'  },
-  { id: 7, src: null, alt: 'Dan wearing red flannel shirt with profound dignity',              category: 'couch',      size: 'normal', color: 'black' },
-  { id: 8, src: null, alt: 'Dan covering the Chicago River — journalist angle 1',              category: 'chicago',    size: 'normal', color: 'blue'  },
-  { id: 9, src: null, alt: 'Dan covering the Chicago River — journalist angle 2',              category: 'chicago',    size: 'normal', color: 'blue'  },
-  { id:10, src: null, alt: 'Dan at the lakefront — full chaos mode activated',                 category: 'zoomies',    size: 'normal', color: 'sky'   },
-  { id:11, src: null, alt: 'Dan at the lakefront — pensive lake gazing',                       category: 'adventures', size: 'wide',   color: 'blue'  },
-  { id:12, src: null, alt: 'Dan in couch operations headquarters',                             category: 'couch',      size: 'normal', color: 'teal'  },
+  // Chicago
+  { id:  1, src: '/images/dan-grinning-skyline.jpg',     alt: 'Dan grinning with the Chicago skyline across Lake Michigan', category: 'chicago',    size: 'wide'   },
+  { id:  2, src: '/images/dan-full-cityscape.jpg',       alt: 'Dan with the full Chicago cityscape',                         category: 'chicago',    size: 'normal' },
+  { id:  3, src: '/images/dan-mouth-cityscape.jpg',      alt: 'Dan, mouth open, Chicago skyline behind',                     category: 'chicago',    size: 'normal' },
+  { id:  4, src: '/images/dan-chicago-river.jpg',        alt: 'Dan covering the Chicago River — six angles',                 category: 'chicago',    size: 'wide'   },
+  { id:  5, src: '/images/night-dan.jpg',                alt: 'Dan at night',                                                category: 'chicago',    size: 'normal' },
+
+  // Zoomies & chaos
+  { id:  6, src: '/images/dan-screaming-skyline.jpg',    alt: 'Dan screaming at the sky — sunset Chicago behind',            category: 'zoomies',    size: 'tall'   },
+  { id:  7, src: '/images/dan-mouth-open-lakefront.jpg', alt: 'Dan with maximum mouth open at the lakefront',                category: 'zoomies',    size: 'normal' },
+  { id:  8, src: '/images/dan-balloon.jpg',              alt: 'Dan with a balloon — chaos unit deployed',                    category: 'chaos',      size: 'normal' },
+  { id:  9, src: '/images/dan-bath.jpg',                 alt: 'Dan during bath time — chaos mode tempered',                  category: 'chaos',      size: 'normal' },
+
+  // Adventures
+  { id: 10, src: '/images/dan-on-beach-gazing.jpg',      alt: 'Dan on the beach gazing at the horizon — stoic mode',         category: 'adventures', size: 'normal' },
+  { id: 11, src: '/images/dan-rugged-beach.jpg',         alt: 'Dan at a rugged beach — windswept',                           category: 'adventures', size: 'normal' },
+  { id: 12, src: '/images/dan-field.jpg',                alt: 'Dan in a field',                                              category: 'adventures', size: 'wide'   },
+  { id: 13, src: '/images/dan-park.jpg',                 alt: 'Dan at the park',                                             category: 'adventures', size: 'normal' },
+  { id: 14, src: '/images/dan-amplitude-sign.jpg',       alt: 'Dan in front of the Amplitude sign',                          category: 'adventures', size: 'normal' },
+  { id: 15, src: '/images/dan-pumpkin.jpg',              alt: 'Dan with a pumpkin — seasonal operations',                    category: 'adventures', size: 'normal' },
+  { id: 16, src: '/images/dan-snow.jpg',                 alt: 'Dan in the snow',                                             category: 'adventures', size: 'normal' },
+  { id: 17, src: '/images/dan-standing.jpg',             alt: 'Dan standing — distinguished portrait',                       category: 'adventures', size: 'normal' },
+
+  // Couch ops
+  { id: 18, src: '/images/dan-couch-lounging.jpg',       alt: 'Dan on the teal couch with aristocratic posture',             category: 'couch',      size: 'normal' },
+  { id: 19, src: '/images/dan-flannel.jpg',              alt: 'Dan in red flannel — profound indoor dignity',                category: 'couch',      size: 'tall'   },
+  { id: 20, src: '/images/dan-xmas.jpg',                 alt: 'Dan at Christmas — indoor holiday mode',                      category: 'couch',      size: 'normal' },
 ]
 
 const CATEGORIES = [

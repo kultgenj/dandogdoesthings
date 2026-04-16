@@ -4,10 +4,10 @@ import { useToast } from '../context/ToastContext'
 import ImgSlot from '../components/ImgSlot'
 
 const FEATURED_PRODUCTS = [
-  { id: 'tote-01',    name: 'The Distinguished Gentleman Tote', desc: "Canvas tote. Dan's likeness. Your groceries. His dignity.",            price: 28, icon: '👜', color: 'tan' },
-  { id: 'print-01',  name: 'Maximum Mouth Print',              desc: 'Art print. Full chaos energy. Suitable for framing.',                  price: 35, icon: '🖼️', color: 'blue', badge: 'Fan Fave' },
-  { id: 'pin-01',    name: 'Couch Ops Enamel Pin',             desc: 'Hard enamel. Soft backing. Hard commitments to the couch.',           price: 12, icon: '📌', color: 'teal' },
-  { id: 'sticker-01',name: 'Flannel Era Sticker Pack',         desc: "5 stickers. One for every mood Dan has. Usually 2 at once.",         price:  8, icon: '🏷️', color: 'black' },
+  { id: 'tote-01',    name: 'The Distinguished Gentleman Tote', desc: "Canvas tote. Dan's likeness. Your groceries. His dignity.",    price: 28, src: '/images/dan-amplitude-sign.jpg' },
+  { id: 'print-01',   name: 'Maximum Mouth Print',              desc: 'Art print. Full chaos energy. Suitable for framing.',          price: 35, src: '/images/dan-mouth-open-lakefront.jpg', badge: 'Fan Fave' },
+  { id: 'pin-01',     name: 'Couch Ops Enamel Pin',             desc: 'Hard enamel. Soft backing. Hard commitments to the couch.',   price: 12, src: '/images/dan-couch-lounging.jpg' },
+  { id: 'sticker-01', name: 'Flannel Era Sticker Pack',         desc: "5 stickers. One for every mood Dan has. Usually 2 at once.",  price:  8, src: '/images/dan-flannel.jpg' },
 ]
 
 export default function Home() {
@@ -23,13 +23,11 @@ export default function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="hero">
-        {/* PHOTO SLOT: Dan grinning in front of the Chicago skyline across Lake Michigan */}
-        {/* To use real photo: add src="images/hero/chicago-skyline.jpg" to <ImgSlot> below */}
-        <div className="hero__bg-placeholder">
-          <div className="icon">📸</div>
-          <strong>Photo Slot: Hero</strong>
-          <span>Dan grinning in front of the Chicago skyline across Lake Michigan</span>
-        </div>
+        <img
+          src="/images/dan-grinning-skyline.jpg"
+          alt="Dan grinning in front of the Chicago skyline across Lake Michigan"
+          className="hero__bg"
+        />
         <div className="hero__overlay" />
         <div className="container">
           <div className="hero__content animate-fade-up">
@@ -72,10 +70,10 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(2.5rem,6vw,6rem)', alignItems: 'center' }}>
             <div style={{ position: 'relative' }}>
-              {/* PHOTO SLOT: Dan on the beach gazing at the horizon */}
-              <ImgSlot
+              <img
+                src="/images/dan-on-beach-gazing.jpg"
                 alt="Dan on the beach gazing at the horizon — stoic mode"
-                variant="img-slot--portrait img-slot--blue"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
               <div style={{ position: 'absolute', width: 180, height: 180, background: 'var(--warm-tan)', borderRadius: 'var(--radius-md)', bottom: '-1.5rem', right: '-1.5rem', zIndex: -1 }} />
             </div>
@@ -138,7 +136,7 @@ export default function Home() {
             {FEATURED_PRODUCTS.map(p => (
               <div className="product-card" key={p.id}>
                 <div className="product-card__img">
-                  <ImgSlot alt={p.name} variant={`img-slot--square img-slot--${p.color}`} />
+                  <img src={p.src} alt={p.name} loading="lazy" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }} />
                   {p.badge && <span className="product-card__badge">{p.badge}</span>}
                 </div>
                 <div className="product-card__body">
@@ -170,19 +168,15 @@ export default function Home() {
         <div className="container" style={{ maxWidth: 'none', paddingRight: 0 }}>
           <div className="photo-reel">
             {[
-              { label: 'Dan screaming at the sky — city behind him',              color: 'black' },
-              { label: 'Dan grinning — Chicago skyline across Lake Michigan',      color: 'blue'  },
-              { label: 'Dan with maximum mouth open — lakefront chaos',            color: 'tan'   },
-              { label: 'Dan in red flannel — profound indoor dignity',             color: 'amber' },
-              { label: 'Dan on teal couch — aristocratic posture',                color: 'teal'  },
-              { label: 'Dan on the beach — stoic horizon gazing',                 color: 'sky'   },
+              { src: '/images/dan-screaming-skyline.jpg',   label: 'Dan screaming at the sky — city behind him' },
+              { src: '/images/dan-grinning-skyline.jpg',    label: 'Dan grinning — Chicago skyline across Lake Michigan' },
+              { src: '/images/dan-mouth-open-lakefront.jpg', label: 'Dan with maximum mouth open — lakefront chaos' },
+              { src: '/images/dan-flannel.jpg',             label: 'Dan in red flannel — profound indoor dignity' },
+              { src: '/images/dan-couch-lounging.jpg',      label: 'Dan on teal couch — aristocratic posture' },
+              { src: '/images/dan-on-beach-gazing.jpg',     label: 'Dan on the beach — stoic horizon gazing' },
             ].map(item => (
               <div className="photo-reel-item" key={item.label}>
-                <ImgSlot
-                  alt={item.label}
-                  variant={`img-slot--${item.color}`}
-                  style={{ height: '320px', borderRadius: 'var(--radius-md)' }}
-                />
+                <img src={item.src} alt={item.label} loading="lazy" style={{ width: '100%', height: '320px', objectFit: 'cover', display: 'block' }} />
               </div>
             ))}
           </div>

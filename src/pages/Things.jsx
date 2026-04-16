@@ -33,10 +33,11 @@ export default function Things() {
         <div className="container">
           <div className="thing-layout">
             <div>
-              {/* PHOTO SLOT: Dan screaming at the sky with the city behind him */}
-              <ImgSlot
-                alt="Dan screaming at the sky — city behind him (zoomies / running section)"
-                variant="img-slot--portrait img-slot--black"
+              <img
+                src="/images/dan-screaming-skyline.jpg"
+                alt="Dan with mouth open, city skyline at sunset behind him"
+                loading="lazy"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
             </div>
             <div>
@@ -63,10 +64,11 @@ export default function Things() {
         <div className="container">
           <div className="thing-layout" style={{ direction: 'rtl' }}>
             <div style={{ direction: 'ltr' }}>
-              {/* PHOTO SLOT: Dan lounging on teal couch with aristocratic posture */}
-              <ImgSlot
-                alt="Dan lounging on the teal couch — aristocratic posture (napping section)"
-                variant="img-slot--landscape img-slot--teal"
+              <img
+                src="/images/dan-couch-lounging.jpg"
+                alt="Dan lounging on the teal couch — aristocratic posture"
+                loading="lazy"
+                style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
             </div>
             <div style={{ direction: 'ltr' }}>
@@ -93,10 +95,11 @@ export default function Things() {
         <div className="container">
           <div className="thing-layout">
             <div>
-              {/* PHOTO SLOT: Dan on the beach gazing at the horizon */}
-              <ImgSlot
-                alt="Dan on the beach gazing at the horizon — stoic adventures mode"
-                variant="img-slot--portrait img-slot--blue"
+              <img
+                src="/images/dan-rugged-beach.jpg"
+                alt="Dan at the beach — adventures mode"
+                loading="lazy"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
             </div>
             <div>
@@ -123,10 +126,11 @@ export default function Things() {
         <div className="container">
           <div className="thing-layout" style={{ direction: 'rtl' }}>
             <div style={{ direction: 'ltr' }}>
-              {/* PHOTO SLOT: Dan in red flannel shirt with profound dignity */}
-              <ImgSlot
-                alt="Dan in red flannel shirt — profound indoor dignity (couch ops section)"
-                variant="img-slot--portrait img-slot--amber"
+              <img
+                src="/images/dan-flannel.jpg"
+                alt="Dan wearing a red flannel shirt with profound dignity"
+                loading="lazy"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
             </div>
             <div style={{ direction: 'ltr' }}>
@@ -158,16 +162,14 @@ export default function Things() {
               Multiple angles. Sustained presence. No comment given. Dan was on assignment and he took it seriously.
             </p>
           </div>
-          {/* 6-panel collage */}
-          <div className="journalist-collage">
-            {[1,2,3,4,5,6].map(n => (
-              <ImgSlot
-                key={n}
-                alt={`Dan covering the Chicago River — journalist angle ${n}`}
-                variant={n % 2 === 0 ? 'img-slot--sky' : 'img-slot--blue'}
-                style={{ borderRadius: 0, height: '100%', width: '100%' }}
-              />
-            ))}
+          {/* Dan's actual 6-panel river coverage */}
+          <div style={{ maxWidth: 720, marginInline: 'auto' }}>
+            <img
+              src="/images/dan-chicago-river.jpg"
+              alt="Dan covering the Chicago River from six different angles"
+              loading="lazy"
+              style={{ width: '100%', borderRadius: 'var(--radius-lg)', display: 'block', boxShadow: 'var(--shadow-heavy)' }}
+            />
           </div>
           <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontStyle: 'italic', fontSize: '0.95rem' }}>

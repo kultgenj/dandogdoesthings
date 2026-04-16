@@ -41,10 +41,11 @@ export default function AntiCruelty() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(2.5rem,6vw,6rem)', alignItems: 'center' }}>
             <div>
-              {/* PHOTO SLOT: Dan in front of Amplitude sign OR beach horizon */}
-              <ImgSlot
-                alt="Dan — a distinguished portrait (use beach horizon or Amplitude sign)"
-                variant="img-slot--portrait img-slot--teal"
+              <img
+                src="/images/dan-amplitude-sign.jpg"
+                alt="Dan in front of the Amplitude sign"
+                loading="lazy"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-md)', display: 'block' }}
               />
             </div>
             <div>
@@ -178,11 +179,11 @@ export default function AntiCruelty() {
       {/* ── CLOSING PHOTO ─────────────────────────────────── */}
       <section className="section--tight section--light">
         <div className="container" style={{ maxWidth: 800, textAlign: 'center' }}>
-          {/* PHOTO SLOT: Dan gazing at Lake Michigan — contemplative closing shot */}
-          <ImgSlot
-            alt="Dan gazing at Lake Michigan — contemplative closing shot"
-            variant="img-slot--wide img-slot--blue"
-            style={{ marginBottom: '2rem', marginInline: 'auto' }}
+          <img
+            src="/images/dan-rugged-beach.jpg"
+            alt="Dan at the rugged beach — contemplative closing shot"
+            loading="lazy"
+            style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-md)', marginBottom: '2rem', display: 'block' }}
           />
           <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1.3rem', color: 'rgba(10,10,10,0.65)', lineHeight: 1.6 }}>
             "I look at the lake and I think: there are many dogs out there who have not yet found their lake.

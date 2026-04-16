@@ -5,14 +5,14 @@ import { useToast } from '../context/ToastContext'
 import ImgSlot from '../components/ImgSlot'
 
 const PHYSICAL_PRODUCTS = [
-  { id: 'tote-01',          name: 'The Distinguished Gentleman Tote', desc: "Heavy canvas. Dan's portrait. Your grocery haul. His dignity, doing the heavy lifting.",           price: 28, icon: '👜', color: 'tan'   },
-  { id: 'print-01',         name: 'Maximum Mouth Print',              desc: 'Dan. Full chaos mode. Mouth completely open. Art print. 8×10. Do not hang in a calming space.',     price: 35, icon: '🖼️', color: 'blue',  badge: 'Fan Fave' },
-  { id: 'pin-01',           name: 'Couch Ops Enamel Pin',             desc: 'Hard enamel. Soft clutch back. Dan on the teal couch, depicted with full aristocratic authority.',  price: 12, icon: '📌', color: 'teal'  },
-  { id: 'sticker-01',       name: 'Flannel Era Sticker Pack',         desc: '5 stickers. Dan across his many moods. The flannel. The gaze. The scream. The couch.',            price:  8, icon: '🏷️', color: 'black' },
-  { id: 'poster-01',        name: 'Chaos Mode Poster',                desc: 'Dan screaming at the sky. City behind him. 18×24 inches. You know what this is for.',              price: 30, icon: '🖼️', color: 'black', badge: 'New' },
-  { id: 'tee-01',           name: 'Dan Dog Fan Tee',                  desc: 'Unisex fit. Soft cotton. "Dan Dog Does Things" on front. Your fandom, now wearable.',             price: 32, icon: '👕', color: 'amber' },
-  { id: 'bundle-journalist',name: 'The Journalist Collection',        desc: "Six-print set from Dan's Chicago River coverage. Full investigation. No conclusions.",            price: 55, icon: '📰', color: 'blue',  badge: 'Bundle' },
-  { id: 'pin-02',           name: 'Skyline Gazer Pin',                desc: 'Dan, Chicago skyline behind him, grinning in the way he does. Enamel. 1.25 inches.',             price: 12, icon: '📌', color: 'sky'   },
+  { id: 'tote-01',          name: 'The Distinguished Gentleman Tote', desc: "Heavy canvas. Dan's portrait. Your grocery haul. His dignity, doing the heavy lifting.",           price: 28, src: '/images/dan-amplitude-sign.jpg' },
+  { id: 'print-01',         name: 'Maximum Mouth Print',              desc: 'Dan. Full chaos mode. Mouth completely open. Art print. 8×10. Do not hang in a calming space.',     price: 35, src: '/images/dan-mouth-open-lakefront.jpg', badge: 'Fan Fave' },
+  { id: 'pin-01',           name: 'Couch Ops Enamel Pin',             desc: 'Hard enamel. Soft clutch back. Dan on the teal couch, depicted with full aristocratic authority.',  price: 12, src: '/images/dan-couch-lounging.jpg' },
+  { id: 'sticker-01',       name: 'Flannel Era Sticker Pack',         desc: '5 stickers. Dan across his many moods. The flannel. The gaze. The scream. The couch.',            price:  8, src: '/images/dan-flannel.jpg' },
+  { id: 'poster-01',        name: 'Chaos Mode Poster',                desc: 'Dan screaming at the sky. City behind him. 18×24 inches. You know what this is for.',              price: 30, src: '/images/dan-screaming-skyline.jpg', badge: 'New' },
+  { id: 'tee-01',           name: 'Dan Dog Fan Tee',                  desc: 'Unisex fit. Soft cotton. "Dan Dog Does Things" on front. Your fandom, now wearable.',             price: 32, src: '/images/dan-standing.jpg' },
+  { id: 'bundle-journalist',name: 'The Journalist Collection',        desc: "Six-print set from Dan's Chicago River coverage. Full investigation. No conclusions.",            price: 55, src: '/images/dan-chicago-river.jpg', badge: 'Bundle' },
+  { id: 'pin-02',           name: 'Skyline Gazer Pin',                desc: 'Dan, Chicago skyline behind him, grinning in the way he does. Enamel. 1.25 inches.',             price: 12, src: '/images/dan-full-cityscape.jpg' },
 ]
 
 const SERVICES = [
@@ -136,10 +136,10 @@ export default function Store() {
           {/* Featured product */}
           <div className="featured-product">
             <div className="featured-product__img">
-              <ImgSlot
+              <img
+                src="/images/dan-on-beach-gazing.jpg"
                 alt="Lake Michigan Gaze — Art Print"
-                variant="img-slot--blue"
-                style={{ height: '100%', borderRadius: 0 }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             </div>
             <div className="featured-product__body">
@@ -163,7 +163,7 @@ export default function Store() {
             {PHYSICAL_PRODUCTS.map(p => (
               <div className="product-card" key={p.id}>
                 <div className="product-card__img">
-                  <ImgSlot alt={p.name} variant={`img-slot--square img-slot--${p.color}`} />
+                  <img src={p.src} alt={p.name} loading="lazy" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }} />
                   {p.badge && <span className="product-card__badge">{p.badge}</span>}
                 </div>
                 <div className="product-card__body">
