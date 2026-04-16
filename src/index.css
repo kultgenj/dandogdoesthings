@@ -337,7 +337,12 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  /* Dan sits in the lower-left of this portrait photo; keep his head in frame on every aspect */
+  object-position: 30% 60%;
+}
+/* Widescreen: tighten horizontal focus so Dan stays anchored */
+@media (min-aspect-ratio: 16/9) {
+  .hero__bg { object-position: 25% 58%; }
 }
 .hero__bg-placeholder {
   position: absolute;
