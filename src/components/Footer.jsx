@@ -38,15 +38,17 @@ export default function Footer() {
             <Link to="/">Home</Link>
             <Link to="/things">Things Dan Does</Link>
             <Link to="/store">Store</Link>
+            <Link to="/business">Business</Link>
             <Link to="/gallery">Gallery</Link>
             <Link to="/anti-cruelty">The Mission</Link>
           </div>
 
           <div className="footer-col">
-            <h4>The Shop</h4>
-            <Link to="/store#physical">Merch &amp; Prints</Link>
-            <Link to="/store#services">Collaborations</Link>
-            <Link to="/store#services">Public Appearances</Link>
+            <h4>Work With Dan</h4>
+            <Link to="/store">Merch &amp; Prints</Link>
+            <Link to="/business">Collaborations</Link>
+            <Link to="/business">Public Appearances</Link>
+            <Link to="/business">Consulting</Link>
             <Link to="/checkout">Checkout</Link>
           </div>
 

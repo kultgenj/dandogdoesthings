@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
-import ImgSlot from '../components/ImgSlot'
 
 const PHYSICAL_PRODUCTS = [
   { id: 'tote-01',          name: 'The Distinguished Gentleman Tote', desc: "Heavy canvas. Dan's portrait. Your grocery haul. His dignity, doing the heavy lifting.",           price: 28, src: '/images/dan-amplitude-sign.jpg' },
@@ -15,99 +13,9 @@ const PHYSICAL_PRODUCTS = [
   { id: 'pin-02',           name: 'Skyline Gazer Pin',                desc: 'Dan, Chicago skyline behind him, grinning in the way he does. Enamel. 1.25 inches.',             price: 12, src: '/images/dan-full-cityscape.jpg' },
 ]
 
-const SERVICES = [
-  {
-    id: 'instagram',
-    icon: '📱',
-    title: 'Instagram Collaborations',
-    tagline: '"Dan has reach. Let\'s talk."',
-    desc: "Dan maintains a dignified and occasionally unhinged social presence. His audience understands him. If your brand also understands him — or wants to — he is open to a conversation. He will stare at the product first. Then decide.",
-    cta: 'Get in Touch →',
-  },
-  {
-    id: 'appearances',
-    icon: '🎤',
-    title: 'Public Appearances',
-    tagline: '"He will show up. He will be calm. Then he won\'t be."',
-    desc: "Dan is available for events, openings, corporate wellness walks, lakefront press junkets, and occasions that call for a distinguished black and tan presence. He will bring gravitas. He may also bring zoomies. Both are part of the package.",
-    cta: 'Book Dan →',
-  },
-  {
-    id: 'consulting',
-    icon: '📊',
-    title: 'Canine Social Media Management Consulting',
-    tagline: '"Years of experience. Zero regrets."',
-    desc: "Dan has studied the algorithm from the inside. He knows what performs (grinning at skylines), what doesn't (explaining yourself), and how to build an audience that genuinely does not know what you're going to do next. That is the brand. That is the strategy.",
-    cta: 'Inquire →',
-  },
-]
-
-function InquiryModal({ service, onClose }) {
-  const [submitted, setSubmitted] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', org: '', message: '' })
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSubmitted(true)
-    setTimeout(onClose, 3500)
-  }
-
-  if (!service) return null
-
-  return (
-    <div className={`modal-overlay${service ? ' open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
-      <div className="modal">
-        <button className="modal__close" onClick={onClose} aria-label="Close">✕</button>
-        <span className="section-eyebrow">{service.title}</span>
-        <h3>Get in Touch</h3>
-        <p className="subtitle">{service.tagline}</p>
-
-        {!submitted ? (
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="inq-name">Your Name</label>
-              <input className="form-input" id="inq-name" type="text" placeholder="Full name" required
-                value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="inq-email">Email</label>
-              <input className="form-input" id="inq-email" type="email" placeholder="you@example.com" required
-                value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="inq-org">Organization / Brand (optional)</label>
-              <input className="form-input" id="inq-org" type="text" placeholder="Your company or brand"
-                value={form.org} onChange={e => setForm(f => ({ ...f, org: e.target.value }))} />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="inq-message">Tell Dan About It</label>
-              <textarea className="form-input" id="inq-message" rows={4}
-                placeholder="What are you thinking? Dan will think about it too." required
-                value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
-            </div>
-            <button type="submit" className="btn btn--tan" style={{ width: '100%', justifyContent: 'center' }}>
-              Send Inquiry →
-            </button>
-          </form>
-        ) : (
-          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🐾</div>
-            <h3>Inquiry Received.</h3>
-            <p style={{ color: 'rgba(10,10,10,0.6)', marginTop: '0.5rem' }}>
-              Dan has been notified. He is currently on the couch.
-              He will get back to you when he gets back to you.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
 export default function Store() {
   const { addToCart } = useCart()
   const { showToast } = useToast()
-  const [activeService, setActiveService] = useState(null)
 
   const handleAdd = (product) => {
     addToCart(product)
@@ -180,30 +88,18 @@ export default function Store() {
         </div>
       </section>
 
-      {/* ── SERVICES ──────────────────────────────────────── */}
-      <div className="store-divider container"><span>Professional Services</span></div>
-
-      <section className="section--tight" id="services">
+      {/* ── BUSINESS CROSS-LINK ───────────────────────────── */}
+      <section className="section--tight">
         <div className="container">
-          <div style={{ marginBottom: '2.5rem' }}>
-            <span className="store-section-title">Services &amp; Collaborations</span>
-            <p style={{ color: 'rgba(10,10,10,0.55)', marginTop: '0.5rem', maxWidth: 560 }}>
-              Dan is available for select professional engagements. Submit an inquiry and he will review it
-              from the couch. Response times vary based on nap schedule.
-            </p>
-          </div>
-          <div className="services-grid">
-            {SERVICES.map(s => (
-              <div className="service-card" key={s.id}>
-                <div className="service-card__icon">{s.icon}</div>
-                <div className="service-card__title">{s.title}</div>
-                <div className="service-card__tagline">{s.tagline}</div>
-                <p>{s.desc}</p>
-                <button className="btn btn--tan" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setActiveService(s)}>
-                  {s.cta}
-                </button>
-              </div>
-            ))}
+          <div style={{ background: 'var(--jet-black)', color: '#fff', borderRadius: 'var(--radius-lg)', padding: 'clamp(2rem,4vw,3rem)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem' }}>
+            <div style={{ flex: '1 1 320px' }}>
+              <span className="section-eyebrow">Collaborations, Bookings, Consulting</span>
+              <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>Looking to Work With Dan?</h3>
+              <p style={{ color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+                Brand collabs, public appearances, and canine social strategy consulting live on their own page now.
+              </p>
+            </div>
+            <Link to="/business" className="btn btn--tan btn--lg">Visit Dan's Business →</Link>
           </div>
         </div>
       </section>
@@ -219,9 +115,6 @@ export default function Store() {
           <Link to="/checkout" className="btn btn--tan btn--lg">Proceed to Checkout →</Link>
         </div>
       </section>
-
-      {/* Inquiry modal */}
-      <InquiryModal service={activeService} onClose={() => setActiveService(null)} />
     </>
   )
 }

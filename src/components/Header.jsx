@@ -40,6 +40,7 @@ export default function Header({ onCartOpen }) {
             <li><Link to="/"              className={isActive('/')              ? 'active' : ''}>Home</Link></li>
             <li><Link to="/things"        className={isActive('/things')        ? 'active' : ''}>Things Dan Does</Link></li>
             <li><Link to="/store"         className={isActive('/store')         ? 'active' : ''}>Store</Link></li>
+            <li><Link to="/business"      className={isActive('/business')      ? 'active' : ''}>Business</Link></li>
             <li><Link to="/gallery"       className={isActive('/gallery')       ? 'active' : ''}>Gallery</Link></li>
             <li><Link to="/anti-cruelty"  className={isActive('/anti-cruelty')  ? 'active' : ''}>The Mission</Link></li>
             {/* Donate shown only in mobile menu */}

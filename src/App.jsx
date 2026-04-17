@@ -9,6 +9,7 @@ import CartDrawer from './components/CartDrawer'
 import Home from './pages/Home'
 import Things from './pages/Things'
 import Store from './pages/Store'
+import Business from './pages/Business'
 import Checkout from './pages/Checkout'
 import Gallery from './pages/Gallery'
 import AntiCruelty from './pages/AntiCruelty'
@@ -32,6 +33,7 @@ function Layout() {
           <Route path="/"             element={<Home />} />
           <Route path="/things"       element={<Things />} />
           <Route path="/store"        element={<Store />} />
+          <Route path="/business"     element={<Business />} />
           <Route path="/checkout"     element={<Checkout />} />
           <Route path="/gallery"      element={<Gallery />} />
           <Route path="/anti-cruelty" element={<AntiCruelty />} />
