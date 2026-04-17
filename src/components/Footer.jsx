@@ -23,11 +23,14 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Dan Dog Does Things</h4>
             <p>A Chicago dog on a mission. Athlete. Philosopher. Occasional menace. Always distinguished.</p>
-            <div className="social-links" style={{ marginTop: '1rem' }}>
-              <a href="#" title="Instagram" aria-label="Instagram">📸</a>
-              <a href="#" title="TikTok"    aria-label="TikTok">🎵</a>
-              <a href="#" title="Twitter/X" aria-label="Twitter">🐦</a>
-            </div>
+            <a
+              href="https://www.instagram.com/dandogdoesthings/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ marginTop: '1rem', color: 'var(--warm-tan)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            >
+              📸 @dandogdoesthings →
+            </a>
           </div>
 
           <div className="footer-col">

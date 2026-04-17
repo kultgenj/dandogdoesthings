@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import ImgSlot from '../components/ImgSlot'
+import InstagramFeed from '../components/InstagramFeed'
 
 function ChaosMeter({ value }) {
   return (
@@ -117,6 +118,32 @@ export default function Things() {
               <p>Every beach, every trail, every new smell: absorbed fully, filed, referenced later at unexpected moments.</p>
               <Link to="/gallery" className="btn btn--tan" style={{ marginTop: '0.5rem', background: 'var(--lake-blue)', borderColor: 'var(--lake-blue)' }}>See Adventure Photos →</Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── INSTAGRAM: LIVE FROM THE FIELD ────────────────── */}
+      <section className="section section--dark">
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <span className="section-eyebrow">Live From Instagram</span>
+            <h2 style={{ color: '#fff' }}>The Current Broadcast</h2>
+            <p style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 520, marginInline: 'auto', marginTop: '0.75rem' }}>
+              Dan posts. Dan performs. Dan does not explain himself. Updates in real time.
+            </p>
+          </div>
+
+          <InstagramFeed />
+
+          <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+            <a
+              href="https://www.instagram.com/dandogdoesthings/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--tan btn--lg"
+            >
+              📸 Follow @dandogdoesthings →
+            </a>
           </div>
         </div>
       </section>
