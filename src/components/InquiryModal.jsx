@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import amplitude from '../amplitude.js'
 
 /**
  * Inquiry modal for service/collaboration requests.
@@ -28,6 +29,10 @@ export default function InquiryModal({ service, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    amplitude.track('Lead Submitted', {
+      service_type: service?.id,
+      has_organization: form.org.trim().length > 0,
+    })
     setSubmitted(true)
     setTimeout(onClose, 3500)
   }

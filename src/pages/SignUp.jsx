@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import amplitude from '../amplitude.js'
 
 export default function SignUp() {
   const { signUp } = useAuth()
@@ -25,10 +26,13 @@ export default function SignUp() {
     }
     setLoading(true)
     try {
-      await signUp({ name: form.name, email: form.email, password: form.password })
+      const signed = await signUp({ name: form.name, email: form.email, password: form.password })
+      amplitude.setUserId(signed.id)
+      amplitude.track('Sign Up Completed', { signup_method: 'email' })
       showToast(`Welcome to Dan's world, ${form.name.split(' ')[0]} 🐾`)
       navigate('/account', { replace: true })
     } catch (err) {
+      amplitude.track('Sign Up Failed', { error_reason: err.message })
       setError(err.message)
     } finally {
       setLoading(false)

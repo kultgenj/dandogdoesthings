@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import ImgSlot from '../components/ImgSlot'
+import { trackClick } from '../amplitude.js'
 
 export default function AntiCruelty() {
   return (
@@ -14,7 +15,8 @@ export default function AntiCruelty() {
             important animal welfare organizations. He didn't stay long. But he never forgot where he came from.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '2.5rem' }}>
-            <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg">
+            <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+              onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: 'hero' })}>
               Donate to Anti-Cruelty →
             </a>
             <Link to="/store" className="btn btn--black btn--lg">Shop — Proceeds Go Here</Link>
@@ -146,7 +148,10 @@ export default function AntiCruelty() {
                 <h3>{card.title}</h3>
                 <p>{card.desc}</p>
                 {card.href
-                  ? <a href={card.href} target="_blank" rel="noopener noreferrer" className="btn btn--teal" style={{ width: '100%', justifyContent: 'center' }}>{card.cta}</a>
+                  ? <a href={card.href} target="_blank" rel="noopener noreferrer" className="btn btn--teal" style={{ width: '100%', justifyContent: 'center' }}
+                      onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: `help_card_${card.title.toLowerCase().replace(/[^a-z]+/g, '_').replace(/^_|_$/g, '')}` })}>
+                      {card.cta}
+                    </a>
                   : <Link to={card.to} className="btn btn--teal" style={{ width: '100%', justifyContent: 'center' }}>{card.cta}</Link>
                 }
               </div>
@@ -166,7 +171,8 @@ export default function AntiCruelty() {
               for long periods of time. He wants this for every dog. The Anti-Cruelty Society makes that possible,
               one animal at a time.
             </p>
-            <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg">
+            <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+              onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: 'big_cta' })}>
               Donate to Anti-Cruelty Society of Chicago →
             </a>
             <p style={{ marginTop: '1.5rem', fontSize: '0.82rem', color: 'rgba(255,255,255,0.45)' }}>

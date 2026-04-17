@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import ImgSlot from '../components/ImgSlot'
+import amplitude from '../amplitude.js'
 
 const GOOGLE_PHOTOS_URL = 'https://photos.google.com/share/AF1QipMH1lnWgJkZH2FUZxeIUPZYhmTMzo7WVZ1KntczVqmikEa_LRVuFXdV3xljwZVTfA?key=ellDVFdVQjJqMERRY05xT2JMcnhiUzlLV05JbWxR'
 
@@ -88,11 +89,32 @@ export default function Gallery() {
 
   const filtered = activeCategory === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeCategory)
 
-  const openLightbox  = (i) => setLightboxIndex(i)
+  const handleFilter = (cat) => {
+    setActiveCategory(cat)
+    const count = cat === 'all' ? PHOTOS.length : PHOTOS.filter(p => p.category === cat).length
+    amplitude.track('Gallery Category Filtered', { category: cat, result_count: count })
+  }
+
+  const openLightbox = (i) => {
+    const photo = filtered[i]
+    amplitude.track('Gallery Photo Viewed', {
+      photo_alt: photo?.alt,
+      category: photo?.category,
+      position: i,
+    })
+    setLightboxIndex(i)
+  }
   const closeLightbox = () => setLightboxIndex(null)
   const navLightbox   = useCallback((dir) => {
-    setLightboxIndex(i => (i + dir + filtered.length) % filtered.length)
-  }, [filtered.length])
+    setLightboxIndex(i => {
+      const next = (i + dir + filtered.length) % filtered.length
+      amplitude.track('Gallery Photo Navigated', {
+        direction: dir > 0 ? 'next' : 'prev',
+        category: filtered[next]?.category,
+      })
+      return next
+    })
+  }, [filtered])
 
   return (
     <>
@@ -116,7 +138,7 @@ export default function Gallery() {
               <button
                 key={cat.key}
                 className={`gallery-filter-btn${activeCategory === cat.key ? ' active' : ''}`}
-                onClick={() => setActiveCategory(cat.key)}
+                onClick={() => handleFilter(cat.key)}
               >
                 {cat.label}
               </button>
@@ -198,7 +220,7 @@ export default function Gallery() {
               { cat: 'zoomies',   label: '💨 Zoomies',       heading: 'The Running',     desc: "The lakefront. The scream. The oval. Documented in real time by people who tried to keep up.",                        color: 'black' },
               { cat: 'couch',     label: '🛋️ Couch Ops',     heading: 'Headquarters',   desc: "The teal couch. The red flannel. The aristocratic posture. The governance of soft surfaces.",                       color: 'teal'  },
             ].map(c => (
-              <div className="card" key={c.cat} style={{ cursor: 'pointer' }} onClick={() => { setActiveCategory(c.cat); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+              <div className="card" key={c.cat} style={{ cursor: 'pointer' }} onClick={() => { handleFilter(c.cat); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
                 <ImgSlot alt={`${c.heading} photos`} variant={`img-slot--landscape img-slot--${c.color}`} style={{ borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }} />
                 <div className="card__body">
                   <div className="card__tag">{c.label}</div>

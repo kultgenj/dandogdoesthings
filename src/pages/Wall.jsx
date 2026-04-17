@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import amplitude from '../amplitude.js'
 
 const STORAGE_KEY = 'dan-dog-ugc'
 const MAX_WIDTH = 1200
@@ -114,6 +115,11 @@ export default function Wall() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
       setSubmissions(updated)
+      amplitude.track('UGC Submission Created', {
+        category: entry.category,
+        has_caption: entry.caption.length > 0,
+        is_authenticated: !!user,
+      })
       setForm({
         name: user?.name || form.name,
         dogName: '',
@@ -234,7 +240,8 @@ export default function Wall() {
               A curated public wall is on the list for a future version.
               For now, post a copy on Instagram and tag{' '}
               <a href="https://www.instagram.com/dandogdoesthings/" target="_blank" rel="noopener noreferrer"
-                style={{ color: 'var(--amber-brown)', fontWeight: 700 }}>
+                style={{ color: 'var(--amber-brown)', fontWeight: 700 }}
+                onClick={() => amplitude.track('Instagram Follow Clicked', { source_page: 'wall' })}>
                 @dandogdoesthings
               </a> — he'll see it.
             </p>

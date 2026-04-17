@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { trackClick } from '../amplitude.js'
 
 export default function Footer() {
   return (
@@ -14,6 +15,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--outline-white"
+            onClick={trackClick('Donate Link Clicked', { source_page: 'footer', variant: 'callout' })}
           >
             Donate Now
           </a>
@@ -28,6 +30,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ marginTop: '1rem', color: 'var(--warm-tan)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+              onClick={trackClick('Instagram Follow Clicked', { source_page: 'footer' })}
             >
               📸 @dandogdoesthings →
             </a>
@@ -39,6 +42,7 @@ export default function Footer() {
             <Link to="/things">Things</Link>
             <Link to="/store">Store</Link>
             <Link to="/business">Business</Link>
+            <Link to="/members">Members</Link>
             <Link to="/gallery">Gallery</Link>
             <Link to="/anti-cruelty">The Mission</Link>
             <Link to="/wall" style={{ color: 'var(--warm-tan)', fontWeight: 700 }}>
@@ -66,6 +70,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--teal)', marginTop: '0.5rem', fontWeight: '700' }}
+              onClick={trackClick('Donate Link Clicked', { source_page: 'footer', variant: 'chicago_col' })}
             >
               Anti-Cruelty Society →
             </a>

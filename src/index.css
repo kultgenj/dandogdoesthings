@@ -1039,6 +1039,202 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
   color: rgba(10,10,10,0.7);
 }
 
+/* ── Members Tier Cards ──────────────────────────────────── */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+@media (max-width: 900px) { .tier-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; } }
+
+.tier-card {
+  position: relative;
+  background: #fff;
+  border: 2px solid var(--light-gray);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  box-shadow: var(--shadow-card);
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-heavy); }
+.tier-card--featured {
+  border-color: var(--warm-tan);
+  box-shadow: 0 10px 40px rgba(200,132,58,0.25);
+  transform: scale(1.02);
+}
+@media (max-width: 900px) { .tier-card--featured { transform: none; } }
+
+.tier-card--current {
+  border-color: var(--teal);
+  background: linear-gradient(180deg, rgba(58,158,143,0.04) 0%, #fff 35%);
+}
+
+.tier-card__ribbon {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--warm-tan);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  box-shadow: var(--shadow-card);
+}
+.tier-card__ribbon--current { background: var(--teal); }
+
+.tier-card__name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--jet-black);
+  margin-bottom: 0.5rem;
+}
+.tier-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+.tier-card__price-amount {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: var(--warm-tan);
+  line-height: 1;
+}
+.tier-card__price-period {
+  color: var(--mid-gray);
+  font-size: 0.95rem;
+}
+.tier-card__tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: rgba(10,10,10,0.55);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+.tier-card__perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  flex: 1;
+}
+.tier-card__perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--light-gray);
+  font-size: 0.9rem;
+  color: rgba(10,10,10,0.75);
+  line-height: 1.55;
+}
+
+/* ── Members Lounge ──────────────────────────────────────── */
+.tier-badge {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  text-align: center;
+  min-width: 180px;
+}
+.tier-badge__label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.3rem;
+}
+.tier-badge__name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--warm-tan);
+  line-height: 1;
+}
+.tier-badge__meta {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.5rem;
+}
+
+.lounge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.lounge-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.lounge-card__icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+.lounge-card h4 {
+  color: var(--warm-tan);
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.lounge-card p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  flex: 1;
+}
+.lounge-card__code {
+  font-family: ui-monospace, 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: rgba(200,132,58,0.15);
+  color: var(--warm-tan);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  letter-spacing: 0.04em;
+  border: 1px dashed rgba(200,132,58,0.4);
+  word-break: break-all;
+}
+.lounge-card__pill {
+  display: inline-block;
+  background: rgba(58,158,143,0.15);
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  align-self: flex-start;
+}
+
+.exclusive-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.exclusive-card:hover { transform: translateY(-3px); border-color: rgba(200,132,58,0.5); }
+
 /* ── The Wall (UGC page) ─────────────────────────────────── */
 .wall-form {
   background: #fff;

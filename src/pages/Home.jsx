@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import ImgSlot from '../components/ImgSlot'
+import { trackClick } from '../amplitude.js'
 
 const FEATURED_PRODUCTS = [
   { id: 'tote-01',    name: 'The Distinguished Gentleman Tote', desc: "Canvas tote. Dan's likeness. Your groceries. His dignity.",    price: 28, src: '/images/dan-amplitude-sign.jpg' },
@@ -200,7 +201,8 @@ export default function Home() {
               </p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg">
+              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+                onClick={trackClick('Donate Link Clicked', { source_page: 'home', variant: 'ac_callout' })}>
                 Donate to Anti-Cruelty →
               </a>
               <Link to="/anti-cruelty" className="btn btn--black btn--lg">Read Dan's Story</Link>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
+import { trackClick } from '../amplitude.js'
 
 export default function Header({ onCartOpen }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -57,6 +58,7 @@ export default function Header({ onCartOpen }) {
             <li><Link to="/things"        className={isActive('/things')        ? 'active' : ''}>Things</Link></li>
             <li><Link to="/store"         className={isActive('/store')         ? 'active' : ''}>Store</Link></li>
             <li><Link to="/business"      className={isActive('/business')      ? 'active' : ''}>Business</Link></li>
+            <li><Link to="/members"       className={location.pathname.startsWith('/members') ? 'active' : ''}>Members</Link></li>
             <li><Link to="/gallery"       className={isActive('/gallery')       ? 'active' : ''}>Gallery</Link></li>
             <li><Link to="/anti-cruelty"  className={isActive('/anti-cruelty')  ? 'active' : ''}>Mission</Link></li>
             {/* Mobile-only: Sign In / Account link in hamburger menu */}
@@ -74,6 +76,7 @@ export default function Header({ onCartOpen }) {
                 rel="noopener noreferrer"
                 className="donate-badge"
                 style={{ display: 'inline-flex' }}
+                onClick={trackClick('Donate Link Clicked', { source_page: 'header', variant: 'mobile_menu' })}
               >
                 🐾 Donate
               </a>
@@ -86,6 +89,7 @@ export default function Header({ onCartOpen }) {
               target="_blank"
               rel="noopener noreferrer"
               className="donate-badge"
+              onClick={trackClick('Donate Link Clicked', { source_page: 'header', variant: 'badge' })}
             >
               🐾 Anti-Cruelty
             </a>

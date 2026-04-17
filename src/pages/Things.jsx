@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ImgSlot from '../components/ImgSlot'
 import InstagramFeed from '../components/InstagramFeed'
+import { trackClick } from '../amplitude.js'
 
 function ChaosMeter({ value }) {
   return (
@@ -141,6 +142,7 @@ export default function Things() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--tan btn--lg"
+              onClick={trackClick('Instagram Follow Clicked', { source_page: 'things' })}
             >
               📸 Follow @dandogdoesthings →
             </a>

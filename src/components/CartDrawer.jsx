@@ -1,17 +1,26 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import ImgSlot from './ImgSlot'
+import amplitude from '../amplitude.js'
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQty, clearCart, cartTotal } = useCart()
   const navigate = useNavigate()
+  const prevOpenRef = useRef(false)
 
-  // Lock scroll when open
+  // Lock scroll when open; emit Cart Viewed when it transitions to open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
+    if (isOpen && !prevOpenRef.current) {
+      amplitude.track('Cart Viewed', {
+        item_count: cart.reduce((s, i) => s + i.qty, 0),
+        cart_value: cartTotal,
+      })
+    }
+    prevOpenRef.current = isOpen
     return () => { document.body.style.overflow = '' }
-  }, [isOpen])
+  }, [isOpen, cart, cartTotal])
 
   const goToCheckout = () => {
     onClose()

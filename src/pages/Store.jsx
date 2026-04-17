@@ -17,8 +17,8 @@ export default function Store() {
   const { addToCart } = useCart()
   const { showToast } = useToast()
 
-  const handleAdd = (product) => {
-    addToCart(product)
+  const handleAdd = (product, { is_featured = false } = {}) => {
+    addToCart(product, { is_featured })
     showToast(`${product.name} added to cart 🛍️`)
   }
 
@@ -56,7 +56,7 @@ export default function Store() {
               <p>Dan at the lakefront. Contemplating. Not explaining. Fine art print on 100lb archival paper. Ships flat. Arrives with Dan's silent energy intact.</p>
               <p>12×16 inches. Suitable for framing. Suitable for staring at when you also don't know what you're thinking about.</p>
               <div className="price">$35</div>
-              <button className="btn btn--tan btn--lg" onClick={() => handleAdd({ id: 'print-lmg', name: 'Lake Michigan Gaze Print', price: 35, color: '🔵' })}>
+              <button className="btn btn--tan btn--lg" onClick={() => handleAdd({ id: 'print-lmg', name: 'Lake Michigan Gaze Print', price: 35, color: '🔵' }, { is_featured: true })}>
                 Add to Cart — $35
               </button>
             </div>

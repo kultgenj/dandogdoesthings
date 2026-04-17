@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import InquiryModal from '../components/InquiryModal'
+import amplitude from '../amplitude.js'
 
 const SERVICES = [
   {
@@ -41,6 +42,14 @@ const PROCESS_STEPS = [
 
 export default function Business() {
   const [activeService, setActiveService] = useState(null)
+
+  const openInquiry = (service) => {
+    amplitude.track('Lead Form Started', {
+      service_type: service.id,
+      source_page: 'business',
+    })
+    setActiveService(service)
+  }
 
   return (
     <>
@@ -91,7 +100,7 @@ export default function Business() {
                 <button
                   className="btn btn--tan"
                   style={{ width: '100%', justifyContent: 'center', marginTop: '1.25rem' }}
-                  onClick={() => setActiveService(s)}
+                  onClick={() => openInquiry(s)}
                 >
                   {s.cta}
                 </button>
@@ -155,7 +164,7 @@ export default function Business() {
               Send the inquiry. Dan will see it. He may not say so immediately, but he will see it.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-              <button className="btn btn--black btn--lg" onClick={() => setActiveService(SERVICES[0])}>
+              <button className="btn btn--black btn--lg" onClick={() => openInquiry(SERVICES[0])}>
                 Start an Inquiry →
               </button>
               <Link to="/store" className="btn btn--outline-white btn--lg">Or Shop Merch</Link>

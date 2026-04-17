@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { useAuth } from '../context/AuthContext'
+import amplitude from '../amplitude.js'
 
 const STEPS = ['Shipping', 'Payment', 'Confirm']
 
@@ -118,6 +119,17 @@ function PaymentForm({ onBack, onPlace, loading }) {
     return Object.keys(errs).length === 0
   }
 
+  const tryPlaceOrder = () => {
+    if (validate()) {
+      onPlace()
+      return
+    }
+    const cardBad = card.number.replace(/\s/g, '') !== '4242424242424242'
+    amplitude.track('Order Failed', {
+      error_reason: cardBad ? 'invalid_card' : 'missing_fields',
+    })
+  }
+
   return (
     <div>
       <div className="checkout-section">
@@ -160,7 +172,7 @@ function PaymentForm({ onBack, onPlace, loading }) {
       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
         <button className="btn btn--outline-black" style={{ flex: 1, justifyContent: 'center' }} onClick={onBack}>← Back</button>
         <button className="btn btn--tan btn--lg" style={{ flex: 2, justifyContent: 'center' }} disabled={loading}
-          onClick={() => { if (validate()) onPlace() }}>
+          onClick={tryPlaceOrder}>
           {loading ? 'Processing…' : 'Place Order →'}
         </button>
       </div>
@@ -216,6 +228,19 @@ export default function Checkout() {
     return () => { document.title = 'Dan Dog Does Things' }
   }, [])
 
+  // Checkout Started — fires once per checkout session when cart has items
+  const startedRef = useRef(false)
+  useEffect(() => {
+    if (!startedRef.current && cart.length > 0) {
+      startedRef.current = true
+      amplitude.track('Checkout Started', {
+        item_count: cart.reduce((s, i) => s + i.qty, 0),
+        cart_value: cartTotal,
+        is_authenticated: !!user,
+      })
+    }
+  }, [cart, cartTotal, user])
+
   const updateShipping = (key, val) => setShipping(s => ({ ...s, [key]: val }))
 
   const placeOrder = () => {
@@ -231,6 +256,7 @@ export default function Checkout() {
       shippingInfo: shipping,
     }
     setTimeout(() => {
+      amplitude.track('Order Completed', { order_number: orderSnapshot.orderNumber })
       setOrderNum(orderSnapshot.orderNumber)
       if (user) saveOrder(orderSnapshot)
       clearCart()
@@ -274,7 +300,8 @@ export default function Checkout() {
               <p style={{ fontSize: '0.85rem', color: 'rgba(10,10,10,0.6)', marginTop: '0.4rem' }}>
                 A portion of every sale goes to the Anti-Cruelty Society of Chicago, where Dan began his journey.
               </p>
-              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '1rem' }}>
+              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '1rem' }}
+                onClick={() => amplitude.track('Donate Link Clicked', { source_page: 'checkout', variant: 'confirmation' })}>
                 Donate to Anti-Cruelty →
               </a>
             </div>
@@ -283,7 +310,14 @@ export default function Checkout() {
           <div className="checkout-layout">
             <div>
               {step === 1 && (
-                <ShippingForm data={shipping} onChange={updateShipping} onContinue={() => setStep(2)} />
+                <ShippingForm data={shipping} onChange={updateShipping} onContinue={() => {
+                  amplitude.track('Checkout Step Completed', {
+                    step_name: 'shipping',
+                    step_number: 1,
+                    shipping_method: shipping.shipping || 'standard',
+                  })
+                  setStep(2)
+                }} />
               )}
               {step === 2 && (
                 <PaymentForm onBack={() => setStep(1)} onPlace={placeOrder} loading={loading} />

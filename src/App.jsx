@@ -19,6 +19,9 @@ import SignUp from './pages/SignUp'
 import ResetPassword from './pages/ResetPassword'
 import Account from './pages/Account'
 import Wall from './pages/Wall'
+import Members from './pages/Members'
+import MembersJoin from './pages/MembersJoin'
+import MembersLounge from './pages/MembersLounge'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -48,6 +51,9 @@ function Layout() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/account"       element={<Account />} />
           <Route path="/wall"          element={<Wall />} />
+          <Route path="/members"         element={<Members />} />
+          <Route path="/members/join"    element={<MembersJoin />} />
+          <Route path="/members/lounge"  element={<MembersLounge />} />
         </Routes>
       </main>
       <Footer />

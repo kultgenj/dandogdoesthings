@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import amplitude from '../amplitude.js'
 
 export default function ResetPassword() {
   const { resetPassword } = useAuth()
@@ -26,6 +27,7 @@ export default function ResetPassword() {
     setLoading(true)
     try {
       await resetPassword({ email: form.email, newPassword: form.newPassword })
+      amplitude.track('Password Reset Completed')
       showToast('Password reset. Sign in with your new one 🔑')
       navigate('/signin', { replace: true })
     } catch (err) {

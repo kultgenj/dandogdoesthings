@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import amplitude from '../amplitude.js'
 
 function ChangePasswordCard() {
   const { changePassword } = useAuth()
@@ -19,6 +20,7 @@ function ChangePasswordCard() {
     setLoading(true)
     try {
       await changePassword({ currentPassword: form.current, newPassword: form.next })
+      amplitude.track('Password Changed')
       showToast('Password updated 🔑')
       setForm({ current: '', next: '', confirm: '' })
       setOpen(false)
@@ -102,6 +104,8 @@ export default function Account() {
   const joined = new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const handleSignOut = () => {
+    amplitude.track('Sign Out')
+    amplitude.setUserId(undefined)
     signOut()
     showToast('Signed out. Dan noticed. He is unbothered.')
     navigate('/')
