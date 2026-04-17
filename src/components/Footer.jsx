@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Explore</h4>
             <Link to="/">Home</Link>
-            <Link to="/things">Things Dan Does</Link>
+            <Link to="/things">Things</Link>
             <Link to="/store">Store</Link>
             <Link to="/business">Business</Link>
             <Link to="/gallery">Gallery</Link>

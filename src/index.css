@@ -789,6 +789,250 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
 .toast .icon { font-size: 1.1rem; }
 @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
+/* ── Auth Pages (SignIn, SignUp, ResetPassword) ──────────── */
+.auth-page {
+  background: var(--light-gray);
+  min-height: calc(100vh - 80px);
+  padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.auth-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: clamp(2rem, 4vw, 3rem);
+  width: 100%;
+  max-width: 460px;
+  box-shadow: var(--shadow-card);
+  border-top: 4px solid var(--warm-tan);
+}
+.auth-card__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm-tan);
+  margin-bottom: 0.5rem;
+}
+.auth-card__title { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 0.5rem; }
+.auth-card__subtitle {
+  color: rgba(10,10,10,0.55);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+.auth-error {
+  background: rgba(139,26,26,0.08);
+  border: 1.5px solid rgba(139,26,26,0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--deep-red);
+  margin-bottom: 1.25rem;
+}
+.auth-demo-note {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: rgba(200,132,58,0.06);
+  border: 1.5px dashed rgba(200,132,58,0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--amber-brown);
+  line-height: 1.5;
+}
+.auth-links {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--light-gray);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(10,10,10,0.55);
+}
+.auth-links a { color: var(--warm-tan); font-weight: 700; }
+.auth-links a:hover { text-decoration: underline; }
+
+/* ── User menu in header ─────────────────────────────────── */
+.signin-link {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-pill);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.signin-link:hover { background: rgba(255,255,255,0.08); border-color: var(--warm-tan); color: var(--warm-tan); }
+
+.user-menu { position: relative; }
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--warm-tan);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+  line-height: 1;
+}
+.user-avatar:hover { border-color: #fff; }
+.user-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-heavy);
+  min-width: 220px;
+  padding: 0.5rem;
+  z-index: 150;
+  color: var(--jet-black);
+}
+.user-menu__greeting {
+  padding: 0.75rem 0.9rem;
+  font-size: 0.75rem;
+  color: var(--mid-gray);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--light-gray);
+  word-break: break-all;
+}
+.user-menu__greeting strong {
+  color: var(--jet-black);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+.user-menu__dropdown a,
+.user-menu__dropdown button {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  color: var(--jet-black);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.user-menu__dropdown a:hover,
+.user-menu__dropdown button:hover { background: var(--light-gray); color: var(--warm-tan); }
+
+/* ── Account Page ────────────────────────────────────────── */
+.account-page {
+  background: var(--jet-black);
+  color: #fff;
+  min-height: calc(100vh - 80px);
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+}
+.account-page h1 { color: #fff; }
+.account-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 800px) { .account-grid { grid-template-columns: 1fr; } }
+
+.account-card {
+  background: #fff;
+  color: var(--jet-black);
+  border-radius: var(--radius-md);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: var(--shadow-card);
+}
+.account-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--light-gray);
+}
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+.account-field:last-of-type { border-bottom: none; }
+.account-field__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+}
+.account-field__value { font-size: 0.95rem; font-weight: 600; word-break: break-all; }
+
+/* ── Order history ───────────────────────────────────────── */
+.order-list { display: flex; flex-direction: column; gap: 1rem; }
+.order-card {
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: border-color 0.15s;
+}
+.order-card:hover { border-color: var(--warm-tan); }
+.order-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+.order-card__number {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--jet-black);
+}
+.order-card__date { font-size: 0.78rem; color: var(--mid-gray); margin-top: 0.15rem; }
+.order-card__total {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: var(--warm-tan);
+}
+.order-card__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.order-card__items li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: rgba(10,10,10,0.7);
+}
+
 /* ── Animations ──────────────────────────────────────────── */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade-up { animation: fadeUp 0.6s ease both; }

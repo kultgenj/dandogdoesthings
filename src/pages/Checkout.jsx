@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
+import { useAuth } from '../context/AuthContext'
 
 const STEPS = ['Shipping', 'Payment', 'Confirm']
 
@@ -204,6 +205,7 @@ function OrderSummary({ cart, cartTotal }) {
 export default function Checkout() {
   const { cart, cartTotal, clearCart } = useCart()
   const { showToast } = useToast()
+  const { user, saveOrder } = useAuth()
   const [step, setStep]       = useState(1)
   const [shipping, setShipping] = useState({ shipping: 'standard' })
   const [loading, setLoading]   = useState(false)
@@ -218,9 +220,19 @@ export default function Checkout() {
 
   const placeOrder = () => {
     setLoading(true)
+    // Capture order details BEFORE clearing the cart
+    const shippingCost = cartTotal > 0 ? 5.99 : 0
+    const orderSnapshot = {
+      orderNumber: 'DAN-' + Math.floor(100000 + Math.random() * 900000),
+      items: cart.map(({ id, name, price, qty }) => ({ id, name, price, qty })),
+      subtotal: cartTotal,
+      shipping: shippingCost,
+      total: cartTotal + shippingCost,
+      shippingInfo: shipping,
+    }
     setTimeout(() => {
-      const num = 'DAN-' + Math.floor(100000 + Math.random() * 900000)
-      setOrderNum(num)
+      setOrderNum(orderSnapshot.orderNumber)
+      if (user) saveOrder(orderSnapshot)
       clearCart()
       setStep(3)
       setLoading(false)
@@ -246,9 +258,17 @@ export default function Checkout() {
               Order number: <strong style={{ color: 'var(--jet-black)' }}>{orderNum}</strong>
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginTop: '2.5rem' }}>
-              <Link to="/store"  className="btn btn--tan btn--lg">Keep Shopping →</Link>
-              <Link to="/"       className="btn btn--outline-black btn--lg">Back Home</Link>
+              {user
+                ? <Link to="/account" className="btn btn--tan btn--lg">View in Your Account →</Link>
+                : <Link to="/store"   className="btn btn--tan btn--lg">Keep Shopping →</Link>
+              }
+              <Link to="/" className="btn btn--outline-black btn--lg">Back Home</Link>
             </div>
+            {!user && (
+              <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'rgba(10,10,10,0.55)' }}>
+                💡 <Link to="/signup" style={{ color: 'var(--warm-tan)', fontWeight: 700 }}>Create an account</Link> to save your order history for next time.
+              </p>
+            )}
             <div style={{ marginTop: '3rem', padding: '1.5rem', background: 'rgba(58,158,143,0.08)', border: '2px solid rgba(58,158,143,0.25)', borderRadius: 'var(--radius-md)' }}>
               <p style={{ color: 'var(--teal)', fontWeight: 700, fontSize: '0.9rem' }}>🐾 Your purchase matters beyond Dan's couch.</p>
               <p style={{ fontSize: '0.85rem', color: 'rgba(10,10,10,0.6)', marginTop: '0.4rem' }}>

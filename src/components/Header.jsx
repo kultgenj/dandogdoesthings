@@ -1,12 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Header({ onCartOpen }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const { cartCount } = useCart()
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const location = useLocation()
   const navRef = useRef(null)
+  const userMenuRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
 
@@ -17,10 +22,22 @@ export default function Header({ onCartOpen }) {
   useEffect(() => {
     const handler = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) setMenuOpen(false)
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) setUserMenuOpen(false)
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [])
+
+  // Close user menu on route change
+  useEffect(() => { setUserMenuOpen(false) }, [location])
+
+  const handleSignOut = () => {
+    signOut()
+    setUserMenuOpen(false)
+    navigate('/')
+  }
+
+  const userInitial = user ? user.name.charAt(0).toUpperCase() : ''
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -37,8 +54,7 @@ export default function Header({ onCartOpen }) {
           </Link>
 
           <ul className={`nav__links${menuOpen ? ' open' : ''}`}>
-            <li><Link to="/"              className={isActive('/')              ? 'active' : ''}>Home</Link></li>
-            <li><Link to="/things"        className={isActive('/things')        ? 'active' : ''}>Things Dan Does</Link></li>
+            <li><Link to="/things"        className={isActive('/things')        ? 'active' : ''}>Things</Link></li>
             <li><Link to="/store"         className={isActive('/store')         ? 'active' : ''}>Store</Link></li>
             <li><Link to="/business"      className={isActive('/business')      ? 'active' : ''}>Business</Link></li>
             <li><Link to="/gallery"       className={isActive('/gallery')       ? 'active' : ''}>Gallery</Link></li>
@@ -66,6 +82,32 @@ export default function Header({ onCartOpen }) {
             >
               🐾 Anti-Cruelty
             </a>
+
+            {user ? (
+              <div className="user-menu" ref={userMenuRef}>
+                <button
+                  className="user-avatar"
+                  onClick={() => setUserMenuOpen(o => !o)}
+                  aria-label={`Account menu for ${user.name}`}
+                  aria-expanded={userMenuOpen}
+                >
+                  {userInitial}
+                </button>
+                {userMenuOpen && (
+                  <div className="user-menu__dropdown">
+                    <div className="user-menu__greeting">
+                      Signed in as<br />
+                      <strong>{user.email}</strong>
+                    </div>
+                    <Link to="/account" onClick={() => setUserMenuOpen(false)}>🐾 Account</Link>
+                    <Link to="/account" onClick={() => setUserMenuOpen(false)}>🛍️ Order history</Link>
+                    <button onClick={handleSignOut}>← Sign out</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/signin" className="signin-link">Sign In</Link>
+            )}
 
             <button
               className="cart-btn"
