@@ -3,3 +3,6 @@ dist
 .DS_Store
 *.local
 .claude
+
+# Amplitude wizard
+.env.local

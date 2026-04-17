@@ -58,15 +58,22 @@ export default function Header({ onCartOpen }) {
             <li><Link to="/store"         className={isActive('/store')         ? 'active' : ''}>Store</Link></li>
             <li><Link to="/business"      className={isActive('/business')      ? 'active' : ''}>Business</Link></li>
             <li><Link to="/gallery"       className={isActive('/gallery')       ? 'active' : ''}>Gallery</Link></li>
-            <li><Link to="/anti-cruelty"  className={isActive('/anti-cruelty')  ? 'active' : ''}>The Mission</Link></li>
-            {/* Donate shown only in mobile menu */}
-            <li>
+            <li><Link to="/anti-cruelty"  className={isActive('/anti-cruelty')  ? 'active' : ''}>Mission</Link></li>
+            {/* Mobile-only: Sign In / Account link in hamburger menu */}
+            <li className="nav__links-mobile-only">
+              {user
+                ? <Link to="/account">🐾 My Account</Link>
+                : <Link to="/signin">→ Sign In / Create Account</Link>
+              }
+            </li>
+            {/* Mobile-only: Donate link */}
+            <li className="nav__links-mobile-only">
               <a
                 href="https://www.anticruelty.org"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="donate-badge"
-                style={{ display: menuOpen ? 'inline-flex' : 'none' }}
+                style={{ display: 'inline-flex' }}
               >
                 🐾 Donate
               </a>

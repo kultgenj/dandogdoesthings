@@ -248,6 +248,9 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
   cursor: pointer;
 }
 
+/* Mobile-only nav items are hidden on desktop */
+.nav__links-mobile-only { display: none; }
+
 @media (max-width: 768px) {
   .nav__links {
     display: none;
@@ -263,9 +266,12 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
     z-index: 99;
   }
   .nav__links.open { display: flex; }
+  .nav__links.open .nav__links-mobile-only { display: flex; }
   .nav__links a { font-size: 1rem; }
   .hamburger { display: flex; }
-  .donate-badge { display: none; }
+  /* Hide desktop-only items in the top action bar on mobile */
+  .nav__actions > .donate-badge,
+  .nav__actions > .signin-link { display: none; }
 }
 
 /* ── Footer ──────────────────────────────────────────────── */
