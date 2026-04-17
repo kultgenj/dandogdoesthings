@@ -18,6 +18,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import ResetPassword from './pages/ResetPassword'
 import Account from './pages/Account'
+import Wall from './pages/Wall'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -46,6 +47,7 @@ function Layout() {
           <Route path="/signup"        element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/account"       element={<Account />} />
+          <Route path="/wall"          element={<Wall />} />
         </Routes>
       </main>
       <Footer />

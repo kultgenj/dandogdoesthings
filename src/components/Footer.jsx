@@ -41,6 +41,9 @@ export default function Footer() {
             <Link to="/business">Business</Link>
             <Link to="/gallery">Gallery</Link>
             <Link to="/anti-cruelty">The Mission</Link>
+            <Link to="/wall" style={{ color: 'var(--warm-tan)', fontWeight: 700 }}>
+              📸 The Wall →
+            </Link>
           </div>
 
           <div className="footer-col">

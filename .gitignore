@@ -6,3 +6,4 @@ dist
 
 # Amplitude wizard
 .env.local
+.env
