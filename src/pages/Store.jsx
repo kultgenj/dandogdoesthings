@@ -8,9 +8,11 @@ const PHYSICAL_PRODUCTS = [
   { id: 'pin-01',           name: 'Couch Ops Enamel Pin',             desc: 'Hard enamel. Soft clutch back. Dan on the teal couch, depicted with full aristocratic authority.',  price: 12, src: '/images/dan-couch-lounging.jpg' },
   { id: 'sticker-01',       name: 'Flannel Era Sticker Pack',         desc: '5 stickers. Dan across his many moods. The flannel. The gaze. The scream. The couch.',            price:  8, src: '/images/dan-flannel.jpg' },
   { id: 'poster-01',        name: 'Chaos Mode Poster',                desc: 'Dan screaming at the sky. City behind him. 18×24 inches. You know what this is for.',              price: 30, src: '/images/dan-screaming-skyline.jpg', badge: 'New' },
-  { id: 'tee-01',           name: 'Dan Dog Fan Tee',                  desc: 'Unisex fit. Soft cotton. "Dan Dog Does Things" on front. Your fandom, now wearable.',             price: 32, src: '/images/dan-standing.jpg' },
+  { id: 'tee-01',           name: 'Dan Dog Fan Tee',                  desc: 'Unisex fit. Soft cotton. "Dan Dog Does Things" on front. Your fandom, now wearable.',             price: 32, src: '/images/Cartoon-Tshirt.png', fit: 'contain' },
   { id: 'bundle-journalist',name: 'The Journalist Collection',        desc: "Six-print set from Dan's Chicago River coverage. Full investigation. No conclusions.",            price: 55, src: '/images/dan-chicago-river.jpg', badge: 'Bundle' },
   { id: 'pin-02',           name: 'Skyline Gazer Pin',                desc: 'Dan, Chicago skyline behind him, grinning in the way he does. Enamel. 1.25 inches.',             price: 12, src: '/images/dan-full-cityscape.jpg' },
+  { id: 'tee-young-dan',    name: 'Young Dan Tee',                    desc: 'Young Dan, printed large. Soft cotton, unisex fit. A reminder that he was once smaller, but always the same.', price: 32, src: '/images/Young%20Dan%20Shirt.png' },
+  { id: 'tee-old-dan',      name: 'Old Dan Tee',                      desc: 'Distinguished Dan, now with a full dossier of experience. Soft cotton, unisex fit. Wear the wisdom.', price: 32, src: '/images/Old%20Dan%20Shirt.png' },
 ]
 
 export default function Store() {
@@ -71,7 +73,7 @@ export default function Store() {
             {PHYSICAL_PRODUCTS.map(p => (
               <div className="product-card" key={p.id}>
                 <div className="product-card__img">
-                  <img src={p.src} alt={p.name} loading="lazy" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }} />
+                  <img src={p.src} alt={p.name} loading="lazy" style={{ width: '100%', aspectRatio: '1/1', objectFit: p.fit || 'cover', background: p.fit === 'contain' ? '#fff' : undefined, display: 'block' }} />
                   {p.badge && <span className="product-card__badge">{p.badge}</span>}
                 </div>
                 <div className="product-card__body">

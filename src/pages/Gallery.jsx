@@ -216,12 +216,30 @@ export default function Gallery() {
           </div>
           <div className="grid-3">
             {[
-              { cat: 'chicago',    label: '🌆 Chicago',       heading: 'The City',        desc: "Dan is a Chicago dog. The skyline, the river, the lake. He documents it all.",                                         color: 'blue'  },
-              { cat: 'zoomies',   label: '💨 Zoomies',       heading: 'The Running',     desc: "The lakefront. The scream. The oval. Documented in real time by people who tried to keep up.",                        color: 'black' },
-              { cat: 'couch',     label: '🛋️ Couch Ops',     heading: 'Headquarters',   desc: "The teal couch. The red flannel. The aristocratic posture. The governance of soft surfaces.",                       color: 'teal'  },
+              { cat: 'chicago',   label: '🌆 Chicago',       heading: 'The City',      desc: "Dan is a Chicago dog. The skyline, the river, the lake. He documents it all.",                       media: { type: 'image', src: '/images/City%20Dan.jpg'   } },
+              { cat: 'zoomies',   label: '💨 Zoomies',       heading: 'The Running',   desc: "The lakefront. The scream. The oval. Documented in real time by people who tried to keep up.",      media: { type: 'video', src: '/images/Zoomie%20Dan.mp4' } },
+              { cat: 'couch',     label: '🛋️ Couch Ops',     heading: 'Headquarters',  desc: "The teal couch. The red flannel. The aristocratic posture. The governance of soft surfaces.",      media: { type: 'image', src: '/images/Couch%20Dan.jpg', position: 'center 45%' } },
             ].map(c => (
               <div className="card" key={c.cat} style={{ cursor: 'pointer' }} onClick={() => { handleFilter(c.cat); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-                <ImgSlot alt={`${c.heading} photos`} variant={`img-slot--landscape img-slot--${c.color}`} style={{ borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }} />
+                <div style={{ aspectRatio: '16/10', overflow: 'hidden', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
+                  {c.media.type === 'video' ? (
+                    <video
+                      src={c.media.src}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  ) : (
+                    <img
+                      src={c.media.src}
+                      alt={`${c.heading} photos`}
+                      loading="lazy"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: c.media.position || 'center', display: 'block' }}
+                    />
+                  )}
+                </div>
                 <div className="card__body">
                   <div className="card__tag">{c.label}</div>
                   <h4>{c.heading}</h4>
