@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting…</title>
+  <meta name="robots" content="noindex" />
+  <script>
+    (function () {
+      var ZOLA = "https://www.zola.com/wedding/michelleandjim2026";
+      // Normalize the requested path: drop leading/trailing slashes, lowercase it.
+      var path = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+      if (path === "wedding") {
+        // Any capitalization of /wedding (WEDDING, Wedding, wEdDiNg, …) lands here.
+        window.location.replace(ZOLA);
+      } else {
+        // Genuinely unknown path — send visitors to the homepage.
+        window.location.replace("/");
+      }
+    })();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: #0A0A0A;
+      color: #F5F5F5;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    a { color: #C9A227; }
+  </style>
+</head>
+<body>
+  <!-- Fallback shown only if JavaScript is disabled -->
+  <p>Redirecting…</p>
+  <p>
+    <a href="/">Go to dandogdoesthings.com</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.zola.com/wedding/michelleandjim2026">Wedding page</a>
+  </p>
+</body>
+</html>
