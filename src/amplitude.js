@@ -81,7 +81,7 @@ void all.initAll(ALL_KEY, {
     transportProvider, flushIntervalMillis: 250,
     fetchRemoteConfig: !localValidation,
     autocapture: {
-      attribution: true, pageViews: true, sessions: true,
+      attribution: true, pageViews: true, sessions: false,
       // Explicit form and click events are the canonical interaction events.
       formInteractions: false, elementInteractions: false,
       fileDownloads: true, frustrationInteractions: true,
