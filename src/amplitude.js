@@ -75,6 +75,20 @@ all.add({
   },
 })
 
+// The npm Unified SDK includes Feature Experiment but not the visual Web
+// Experiment runtime. Its project configuration is fetched after startup.
+if (!localValidation && window.WebExperiment?.initialize) {
+  window.WebExperiment.initialize(ALL_KEY, {
+    initialFlags: '[]',
+    pageObjects: '{}',
+    behavioralTargetingRules: '{}',
+  }, {
+    instanceName: 'secondary',
+    serverZone: 'US',
+  })
+  all.add(window.webExperiment.plugin())
+}
+
 void all.initAll(ALL_KEY, {
   instanceName: 'secondary',
   analytics: {
@@ -89,7 +103,7 @@ void all.initAll(ALL_KEY, {
     },
   },
   sessionReplay: { sampleRate: localValidation ? 0 : 1 },
-  engagement: { skip: true },
+  engagement: { skip: localValidation },
 })
 
 const track = (event, properties = {}, options) => {
