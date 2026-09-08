@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import amplitude from '../amplitude.js'
+import { product } from '../analytics/schema.js'
 
 /**
  * Inquiry modal for service/collaboration requests.
@@ -8,12 +9,14 @@ import amplitude from '../amplitude.js'
  *   onClose — callback to close the modal
  */
 export default function InquiryModal({ service, onClose }) {
+  const submittedRef = useRef(false)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', org: '', message: '' })
 
   // Reset state whenever the modal opens for a new service
   useEffect(() => {
     if (service) {
+      submittedRef.current = false
       setSubmitted(false)
       setForm({ name: '', email: '', org: '', message: '' })
     }
@@ -29,8 +32,11 @@ export default function InquiryModal({ service, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    amplitude.track('Lead Submitted', {
-      service_type: service?.id,
+    if (submittedRef.current || !service) return
+    submittedRef.current = true
+    amplitude.track('Lead Form Completed', {
+      products: [product(service, 'service')],
+      source_page: 'business',
       has_organization: form.org.trim().length > 0,
     })
     setSubmitted(true)

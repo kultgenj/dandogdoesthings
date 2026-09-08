@@ -104,8 +104,6 @@ export default function Account() {
   const joined = new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const handleSignOut = () => {
-    amplitude.track('Sign Out')
-    amplitude.setUserId(undefined)
     signOut()
     showToast('Signed out. Dan noticed. He is unbothered.')
     navigate('/')

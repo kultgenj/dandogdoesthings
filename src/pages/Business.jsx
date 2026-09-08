@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import InquiryModal from '../components/InquiryModal'
 import amplitude from '../amplitude.js'
+import { product } from '../analytics/schema.js'
 
 const SERVICES = [
   {
@@ -45,7 +46,7 @@ export default function Business() {
 
   const openInquiry = (service) => {
     amplitude.track('Lead Form Started', {
-      service_type: service.id,
+      products: [product(service, 'service')],
       source_page: 'business',
     })
     setActiveService(service)

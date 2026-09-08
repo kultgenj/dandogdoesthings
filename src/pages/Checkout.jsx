@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { useAuth } from '../context/AuthContext'
 import amplitude from '../amplitude.js'
+import { products, money } from '../analytics/schema.js'
 
 const STEPS = ['Shipping', 'Payment', 'Confirm']
 
@@ -102,7 +103,7 @@ function ShippingForm({ data, onChange, onContinue }) {
   )
 }
 
-function PaymentForm({ onBack, onPlace, loading }) {
+function PaymentForm({ onBack, onPlace, loading, cart }) {
   const [card, setCard] = useState({ name: '', number: '', exp: '', cvv: '' })
   const [errors, setErrors] = useState({})
 
@@ -126,6 +127,7 @@ function PaymentForm({ onBack, onPlace, loading }) {
     }
     const cardBad = card.number.replace(/\s/g, '') !== '4242424242424242'
     amplitude.track('Order Failed', {
+      products: products(cart),
       error_reason: cardBad ? 'invalid_card' : 'missing_fields',
     })
   }
@@ -180,8 +182,8 @@ function PaymentForm({ onBack, onPlace, loading }) {
   )
 }
 
-function OrderSummary({ cart, cartTotal }) {
-  const shipping = cartTotal > 0 ? 5.99 : 0
+function OrderSummary({ cart, cartTotal, shippingMethod }) {
+  const shipping = cartTotal > 0 ? (shippingMethod === 'express' ? 14.99 : 5.99) : 0
   return (
     <div className="order-summary">
       <h3>Order Summary</h3>
@@ -234,6 +236,7 @@ export default function Checkout() {
     if (!startedRef.current && cart.length > 0) {
       startedRef.current = true
       amplitude.track('Checkout Started', {
+        products: products(cart),
         item_count: cart.reduce((s, i) => s + i.qty, 0),
         cart_value: cartTotal,
         is_authenticated: !!user,
@@ -243,12 +246,15 @@ export default function Checkout() {
 
   const updateShipping = (key, val) => setShipping(s => ({ ...s, [key]: val }))
 
+  const placingRef = useRef(false)
   const placeOrder = () => {
+    if (placingRef.current || !cart.length) return
+    placingRef.current = true
     setLoading(true)
     // Capture order details BEFORE clearing the cart
-    const shippingCost = cartTotal > 0 ? 5.99 : 0
+    const shippingCost = cartTotal > 0 ? (shipping.shipping === 'express' ? 14.99 : 5.99) : 0
     const orderSnapshot = {
-      orderNumber: 'DAN-' + Math.floor(100000 + Math.random() * 900000),
+      orderNumber: 'DAN-' + crypto.randomUUID(),
       items: cart.map(({ id, name, price, qty }) => ({ id, name, price, qty })),
       subtotal: cartTotal,
       shipping: shippingCost,
@@ -256,7 +262,13 @@ export default function Checkout() {
       shippingInfo: shipping,
     }
     setTimeout(() => {
-      amplitude.track('Order Completed', { order_number: orderSnapshot.orderNumber })
+      amplitude.track('Order Completed', {
+        order_number: orderSnapshot.orderNumber, order_type: 'merchandise', currency: 'USD',
+        subtotal: money(orderSnapshot.subtotal), shipping: orderSnapshot.shipping, total: money(orderSnapshot.total),
+        item_count: orderSnapshot.items.reduce((sum, item) => sum + item.qty, 0),
+        shipping_method: shipping.shipping, is_authenticated: !!user, source_page: 'checkout', is_test: true,
+        products: products(orderSnapshot.items, true),
+      })
       setOrderNum(orderSnapshot.orderNumber)
       if (user) saveOrder(orderSnapshot)
       clearCart()
@@ -312,6 +324,7 @@ export default function Checkout() {
               {step === 1 && (
                 <ShippingForm data={shipping} onChange={updateShipping} onContinue={() => {
                   amplitude.track('Checkout Step Completed', {
+                    products: products(cart),
                     step_name: 'shipping',
                     step_number: 1,
                     shipping_method: shipping.shipping || 'standard',
@@ -320,10 +333,10 @@ export default function Checkout() {
                 }} />
               )}
               {step === 2 && (
-                <PaymentForm onBack={() => setStep(1)} onPlace={placeOrder} loading={loading} />
+                <PaymentForm cart={cart} onBack={() => setStep(1)} onPlace={placeOrder} loading={loading} />
               )}
             </div>
-            <OrderSummary cart={cart} cartTotal={cartTotal} />
+            <OrderSummary cart={cart} cartTotal={cartTotal} shippingMethod={shipping.shipping} />
           </div>
         )}
       </div>

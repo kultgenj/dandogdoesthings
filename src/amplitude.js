@@ -1,51 +1,105 @@
-/**
- * Amplitude Unified SDK — dual-project setup.
- *
- * Initializes both projects on app boot with the full feature bundle:
- *   - Autocapture (page views, sessions, clicks, forms, file downloads, attribution)
- *   - Session Replay (100% sample rate; tune down for production traffic)
- *   - Web Experimentation (auto-fetched on init)
- *   - Guides & Surveys (auto-initialized)
- *
- * Every event is sent to both projects independently. No custom track()
- * calls are used — everything flows through autocapture.
- */
-import * as amplitude from '@amplitude/unified'
+import { createInstance } from '@amplitude/unified'
+import { routePath, sessionClassifier } from './analytics/schema.js'
 
-const PROJECTS = [
-  { apiKey: '1ace93105d2914a01a1e207e93f070e4', instanceName: 'primary' },
-  { apiKey: '4acddc9bd2981674d9732c8800b491cf', instanceName: 'secondary' },
-]
-
-const sharedOptions = {
-  // Analytics / autocapture config goes under `analytics` for initAll().
-  // Element / form / file-download / frustration interactions are opt-in
-  // (they default to false even when autocapture:true is passed).
-  analytics: {
-    autocapture: {
-      attribution:             true,
-      pageViews:               true,
-      sessions:                false,
-      formInteractions:        true,
-      fileDownloads:           true,
-      elementInteractions:     true,
-      frustrationInteractions: true,
-    },
-  },
-  sessionReplay: {
-    sampleRate: 1.0,
-  },
+const ALL_KEY = '4acddc9bd2981674d9732c8800b491cf'
+const HUMAN_KEY = '1ace93105d2914a01a1e207e93f070e4'
+const all = createInstance()
+let human
+let humanReady
+const classify = sessionClassifier(window.localStorage)
+const localValidation = import.meta.env.DEV && import.meta.env.VITE_ANALYTICS_VALIDATE === 'true'
+const captured = []
+if (localValidation) {
+  window.__analyticsEvents = captured
+  const panel = document.createElement('details')
+  panel.id = 'analytics-validation'
+  panel.innerHTML = '<summary>Local analytics validation (no event uploads)</summary><pre></pre>'
+  document.body.append(panel)
+  setInterval(() => { panel.querySelector('pre').textContent = JSON.stringify(captured, null, 2) }, 250)
 }
+const transportProvider = localValidation ? {
+  async send(_url, payload) {
+    captured.push(...payload.events.map(event => ({ project: payload.api_key === ALL_KEY ? 'all' : 'human', ...event })))
+    return { status: 'success', statusCode: 200, body: { code: 200, eventsIngested: payload.events.length } }
+  },
+} : undefined
 
-for (const project of PROJECTS) {
-  void amplitude.initAll(project.apiKey, {
-    ...sharedOptions,
-    instanceName: project.instanceName,
+function captureLocally(client) {
+  if (localValidation) client.add({
+    name: 'local-transport', type: 'before',
+    async setup(config) { config.transportProvider = transportProvider },
+    async execute(event) { return event },
   })
 }
+captureLocally(all)
 
-// Small helper for tagging click handlers without inline arrow clutter.
-// Usage: onClick={trackClick('Donate Link Clicked', { source_page: 'home' })}
-export const trackClick = (event, properties) => () => amplitude.track(event, properties)
+async function humanClient() {
+  if (!human) {
+    human = createInstance()
+    captureLocally(human)
+    // Analytics only: Unified's replay plugin shares a global recorder.
+    humanReady = human.init(HUMAN_KEY, undefined, {
+      instanceName: 'primary', autocapture: false, defaultTracking: false,
+      fetchRemoteConfig: false, transportProvider, flushIntervalMillis: 250,
+    }).promise
+  }
+  await humanReady
+  return human
+}
 
-export default amplitude
+// Run after SDK enrichment: preserve event identity/session and normalize paths
+// from the event's own URL, not the URL at a later flush time.
+all.add({
+  name: 'route-and-audience', type: 'enrichment',
+  async execute(event) {
+    const location = event.event_properties?.['[Amplitude] Page Location'] || window.location.href
+    const bot = classify(event.session_id, location)
+    event.event_properties = { ...event.event_properties,
+      '[Amplitude] Page Location': location,
+      '[Amplitude] Page Path': routePath(location), ampli_bot: bot,
+    }
+    return event
+  },
+})
+all.add({
+  name: 'human-project-delivery', type: 'destination',
+  async execute(event) {
+    if (!event.event_properties?.ampli_bot) {
+      const client = await humanClient()
+      const copy = structuredClone(event)
+      // Replay belongs to the all-activity project, not the human project.
+      delete copy.event_properties['[Amplitude] Session Replay ID']
+      client.track(copy)
+    }
+    return { event, code: 200, message: 'Audience routing complete' }
+  },
+})
+
+void all.initAll(ALL_KEY, {
+  instanceName: 'secondary',
+  analytics: {
+    transportProvider, flushIntervalMillis: 250,
+    fetchRemoteConfig: !localValidation,
+    autocapture: {
+      attribution: true, pageViews: true, sessions: true,
+      // Explicit form and click events are the canonical interaction events.
+      formInteractions: false, elementInteractions: false,
+      fileDownloads: true, frustrationInteractions: true,
+      webVitals: true, networkTracking: true,
+    },
+  },
+  sessionReplay: { sampleRate: localValidation ? 0 : 1 },
+  engagement: { skip: true },
+})
+
+const track = (event, properties = {}, options) => {
+  const location = window.location.href
+  return all.track(event, {
+    ...properties,
+    '[Amplitude] Page Location': location,
+    '[Amplitude] Page Path': routePath(location),
+  }, options)
+}
+
+export const trackClick = (event, properties) => () => track(event, properties)
+export default { track, setUserId: all.setUserId }

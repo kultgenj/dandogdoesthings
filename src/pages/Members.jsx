@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import amplitude from '../amplitude.js'
+import { product } from '../analytics/schema.js'
 import { TIERS } from '../data/tiers'
 
 export default function Members() {
@@ -8,7 +9,7 @@ export default function Members() {
   const navigate = useNavigate()
 
   const handleSelect = (tier) => {
-    amplitude.track('Membership Tier Selected', { tier: tier.id, price: tier.price })
+    amplitude.track('Membership Tier Selected', { products: [product(tier, 'membership', { billing_interval: 'year' })] })
     navigate(`/members/join?tier=${tier.id}`)
   }
 

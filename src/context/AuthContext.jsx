@@ -85,6 +85,8 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signOut = useCallback(() => {
+    amplitude.track('Sign Out Completed')
+    amplitude.setUserId(undefined)
     localStorage.removeItem(KEY_CURRENT)
     setUser(null)
   }, [])

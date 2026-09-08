@@ -106,15 +106,14 @@ export default function Gallery() {
   }
   const closeLightbox = () => setLightboxIndex(null)
   const navLightbox   = useCallback((dir) => {
-    setLightboxIndex(i => {
-      const next = (i + dir + filtered.length) % filtered.length
+    if (lightboxIndex === null) return
+    const next = (lightboxIndex + dir + filtered.length) % filtered.length
       amplitude.track('Gallery Photo Navigated', {
         direction: dir > 0 ? 'next' : 'prev',
         category: filtered[next]?.category,
       })
-      return next
-    })
-  }, [filtered])
+    setLightboxIndex(next)
+  }, [filtered, lightboxIndex])
 
   return (
     <>

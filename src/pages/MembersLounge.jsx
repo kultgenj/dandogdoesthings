@@ -1,16 +1,19 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import amplitude from '../amplitude.js'
+import { product } from '../analytics/schema.js'
 import ImgSlot from '../components/ImgSlot'
 import { getTier } from '../data/tiers'
 
 export default function MembersLounge() {
   const { user } = useAuth()
 
+  const viewedTier = useRef(null)
   useEffect(() => {
-    if (user?.membership?.tier) {
-      amplitude.track('Lounge Viewed', { tier: user.membership.tier })
+    if (user?.membership?.tier && viewedTier.current !== user.membership.tier) {
+      viewedTier.current = user.membership.tier
+      amplitude.track('Lounge Viewed', { products: [product(getTier(user.membership.tier), 'membership', { billing_interval: 'year' })] })
     }
   }, [user])
 

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import amplitude from '../amplitude.js'
+import { product } from '../analytics/schema.js'
 import { getTier } from '../data/tiers'
 
 export default function MembersJoin() {
@@ -17,6 +18,7 @@ export default function MembersJoin() {
   const [card, setCard] = useState({ name: '', number: '', exp: '', cvv: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const submittingRef = useRef(false)
 
   // If no valid tier was requested, bounce back to the members landing
   if (!tier) return <Navigate to="/members" replace />
@@ -34,6 +36,7 @@ export default function MembersJoin() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (submittingRef.current) return
     setError('')
     if (card.number.replace(/\s/g, '') !== '4242424242424242') {
       setError('Use test card: 4242 4242 4242 4242')
@@ -43,13 +46,15 @@ export default function MembersJoin() {
       setError('Please complete all payment fields.')
       return
     }
+    submittingRef.current = true
     setLoading(true)
     setTimeout(() => {
       const m = joinMembership({ tier: tier.id, price: tier.price, acsPercent: tier.acs_percent })
-      amplitude.track('Membership Joined', {
-        tier: tier.id,
-        price: tier.price,
-        acs_donation: m.acs_donation,
+      amplitude.track('Order Completed', {
+        order_number: 'MEM-' + crypto.randomUUID(), order_type: 'membership', currency: 'USD',
+        subtotal: tier.price, total: tier.price, item_count: 1, is_authenticated: true,
+        source_page: 'members_join', is_test: true,
+        products: [product(tier, 'membership', { billing_interval: 'year', revenue: tier.price, acs_donation: m.acs_donation })],
       })
       showToast(`Welcome to the ${tier.name} tier 🐾`)
       navigate('/members/lounge', { replace: true })

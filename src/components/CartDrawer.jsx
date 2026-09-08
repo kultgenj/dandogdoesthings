@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import ImgSlot from './ImgSlot'
 import amplitude from '../amplitude.js'
+import { products } from '../analytics/schema.js'
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQty, clearCart, cartTotal } = useCart()
@@ -14,6 +15,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     document.body.style.overflow = isOpen ? 'hidden' : ''
     if (isOpen && !prevOpenRef.current) {
       amplitude.track('Cart Viewed', {
+        products: products(cart),
         item_count: cart.reduce((s, i) => s + i.qty, 0),
         cart_value: cartTotal,
       })
