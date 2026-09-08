@@ -16,6 +16,7 @@ export default function AntiCruelty() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '2.5rem' }}>
             <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+              data-amplitude-explicit-click
               onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: 'hero' })}>
               Donate to Anti-Cruelty →
             </a>
@@ -149,6 +150,7 @@ export default function AntiCruelty() {
                 <p>{card.desc}</p>
                 {card.href
                   ? <a href={card.href} target="_blank" rel="noopener noreferrer" className="btn btn--teal" style={{ width: '100%', justifyContent: 'center' }}
+                      data-amplitude-explicit-click
                       onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: `help_card_${card.title.toLowerCase().replace(/[^a-z]+/g, '_').replace(/^_|_$/g, '')}` })}>
                       {card.cta}
                     </a>
@@ -172,6 +174,7 @@ export default function AntiCruelty() {
               one animal at a time.
             </p>
             <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+              data-amplitude-explicit-click
               onClick={trackClick('Donate Link Clicked', { source_page: 'anti_cruelty', variant: 'big_cta' })}>
               Donate to Anti-Cruelty Society of Chicago →
             </a>

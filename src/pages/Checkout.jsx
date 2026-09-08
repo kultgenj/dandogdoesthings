@@ -95,6 +95,7 @@ function ShippingForm({ data, onChange, onContinue }) {
       <button
         className="btn btn--tan btn--lg"
         style={{ width: '100%', justifyContent: 'center' }}
+        data-amplitude-explicit-click
         onClick={() => { if (validate()) onContinue(); }}
       >
         Continue to Payment →
@@ -174,6 +175,7 @@ function PaymentForm({ onBack, onPlace, loading, cart }) {
       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
         <button className="btn btn--outline-black" style={{ flex: 1, justifyContent: 'center' }} onClick={onBack}>← Back</button>
         <button className="btn btn--tan btn--lg" style={{ flex: 2, justifyContent: 'center' }} disabled={loading}
+          data-amplitude-explicit-click
           onClick={tryPlaceOrder}>
           {loading ? 'Processing…' : 'Place Order →'}
         </button>
@@ -208,6 +210,7 @@ function OrderSummary({ cart, cartTotal, shippingMethod }) {
         <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
           🐾 A portion of every sale supports the<br />
           <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}
+            data-amplitude-explicit-click
             onClick={trackClick('Outbound Link Clicked', { source_page: 'checkout', destination_domain: 'anticruelty.org', link_name: 'order_summary' })}>
             Anti-Cruelty Society of Chicago
           </a>
@@ -314,6 +317,7 @@ export default function Checkout() {
                 A portion of every sale goes to the Anti-Cruelty Society of Chicago, where Dan began his journey.
               </p>
               <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '1rem' }}
+                data-amplitude-explicit-click
                 onClick={() => amplitude.track('Donate Link Clicked', { source_page: 'checkout', variant: 'confirmation' })}>
                 Donate to Anti-Cruelty →
               </a>

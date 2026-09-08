@@ -101,6 +101,7 @@ export default function Business() {
                 <button
                   className="btn btn--tan"
                   style={{ width: '100%', justifyContent: 'center', marginTop: '1.25rem' }}
+                  data-amplitude-explicit-click
                   onClick={() => openInquiry(s)}
                 >
                   {s.cta}
@@ -165,7 +166,7 @@ export default function Business() {
               Send the inquiry. Dan will see it. He may not say so immediately, but he will see it.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-              <button className="btn btn--black btn--lg" onClick={() => openInquiry(SERVICES[0])}>
+              <button className="btn btn--black btn--lg" data-amplitude-explicit-click onClick={() => openInquiry(SERVICES[0])}>
                 Start an Inquiry →
               </button>
               <Link to="/store" className="btn btn--outline-white btn--lg">Or Shop Merch</Link>

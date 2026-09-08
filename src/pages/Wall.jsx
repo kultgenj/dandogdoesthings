@@ -241,6 +241,7 @@ export default function Wall() {
               For now, post a copy on Instagram and tag{' '}
               <a href="https://www.instagram.com/dandogdoesthings/" target="_blank" rel="noopener noreferrer"
                 style={{ color: 'var(--amber-brown)', fontWeight: 700 }}
+                data-amplitude-explicit-click
                 onClick={() => amplitude.track('Instagram Follow Clicked', { source_page: 'wall' })}>
                 @dandogdoesthings
               </a> — he'll see it.

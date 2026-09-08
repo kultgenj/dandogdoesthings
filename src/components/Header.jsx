@@ -76,6 +76,7 @@ export default function Header({ onCartOpen }) {
                 rel="noopener noreferrer"
                 className="donate-badge"
                 style={{ display: 'inline-flex' }}
+                data-amplitude-explicit-click
                 onClick={trackClick('Donate Link Clicked', { source_page: 'header', variant: 'mobile_menu' })}
               >
                 🐾 Donate
@@ -89,6 +90,7 @@ export default function Header({ onCartOpen }) {
               target="_blank"
               rel="noopener noreferrer"
               className="donate-badge"
+              data-amplitude-explicit-click
               onClick={trackClick('Donate Link Clicked', { source_page: 'header', variant: 'badge' })}
             >
               🐾 Anti-Cruelty
@@ -112,7 +114,7 @@ export default function Header({ onCartOpen }) {
                     </div>
                     <Link to="/account" onClick={() => setUserMenuOpen(false)}>🐾 Account</Link>
                     <Link to="/account" onClick={() => setUserMenuOpen(false)}>🛍️ Order history</Link>
-                    <button onClick={handleSignOut}>← Sign out</button>
+                    <button data-amplitude-explicit-click onClick={handleSignOut}>← Sign out</button>
                   </div>
                 )}
               </div>
@@ -122,6 +124,7 @@ export default function Header({ onCartOpen }) {
 
             <button
               className="cart-btn"
+              data-amplitude-explicit-click
               onClick={onCartOpen}
               aria-label={`View cart (${cartCount} item${cartCount !== 1 ? 's' : ''})`}
             >

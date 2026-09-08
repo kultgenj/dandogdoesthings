@@ -77,11 +77,11 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <div className="cart-item__name">{item.name}</div>
                   <div className="cart-item__price">${(item.price * item.qty).toFixed(2)}</div>
                   <div className="cart-item__qty">
-                    <button onClick={() => updateQty(item.id, -1)} aria-label="Decrease quantity">−</button>
+                    <button data-amplitude-explicit-click onClick={() => updateQty(item.id, -1)} aria-label="Decrease quantity">−</button>
                     <span>{item.qty}</span>
-                    <button onClick={() => updateQty(item.id,  1)} aria-label="Increase quantity">+</button>
+                    <button data-amplitude-explicit-click onClick={() => updateQty(item.id,  1)} aria-label="Increase quantity">+</button>
                   </div>
-                  <button className="cart-item__remove" onClick={() => removeFromCart(item.id)}>
+                  <button className="cart-item__remove" data-amplitude-explicit-click onClick={() => removeFromCart(item.id)}>
                     Remove
                   </button>
                 </div>
@@ -102,6 +102,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             <button
               className="btn btn--outline-black btn--sm"
               style={{ width: '100%', justifyContent: 'center', marginTop: '0.75rem' }}
+              data-amplitude-explicit-click
               onClick={clearCartByUser}
             >
               Clear Cart

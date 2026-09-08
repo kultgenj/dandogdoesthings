@@ -142,6 +142,7 @@ export default function Things() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--tan btn--lg"
+              data-amplitude-explicit-click
               onClick={trackClick('Instagram Follow Clicked', { source_page: 'things' })}
             >
               📸 Follow @dandogdoesthings →

@@ -69,6 +69,7 @@ export default function Members() {
                     <button
                       className={`btn ${tier.featured ? 'btn--tan' : 'btn--outline-black'}`}
                       style={{ width: '100%', justifyContent: 'center' }}
+                      data-amplitude-explicit-click
                       onClick={() => handleSelect(tier)}
                     >
                       Choose {tier.name} →

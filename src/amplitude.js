@@ -3,6 +3,12 @@ import { routePath, sessionClassifier } from './analytics/schema.js'
 
 const ALL_KEY = '4acddc9bd2981674d9732c8800b491cf'
 const HUMAN_KEY = '1ace93105d2914a01a1e207e93f070e4'
+const EXPLICIT_CLICK_SELECTOR = '[data-amplitude-explicit-click]'
+const autocaptureElementSelectors = [
+  'a', 'button', 'input', 'select', 'textarea', 'label', 'video', 'audio',
+  '[contenteditable="true" i]', '[data-amp-default-track]', '.amp-default-track',
+  '.cart-overlay', '.modal-overlay', '.lightbox__overlay',
+].map(selector => `${selector}:not(${EXPLICIT_CLICK_SELECTOR})`)
 const all = createInstance()
 let human
 let humanReady
@@ -96,8 +102,14 @@ void all.initAll(ALL_KEY, {
     fetchRemoteConfig: !localValidation,
     autocapture: {
       attribution: true, pageViews: true, sessions: false,
-      // Explicit form and click events are the canonical interaction events.
-      formInteractions: false, elementInteractions: false,
+      formInteractions: false,
+      // Autocapture ordinary controls while explicit click events remain canonical.
+      // Action-click inference is disabled so a marked control cannot be recaptured
+      // through a parent div after its click changes the DOM or route.
+      elementInteractions: {
+        cssSelectorAllowlist: autocaptureElementSelectors,
+        actionClickAllowlist: [],
+      },
       fileDownloads: true, frustrationInteractions: true,
       webVitals: true, networkTracking: true,
     },

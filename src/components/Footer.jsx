@@ -15,6 +15,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--outline-white"
+            data-amplitude-explicit-click
             onClick={trackClick('Donate Link Clicked', { source_page: 'footer', variant: 'callout' })}
           >
             Donate Now
@@ -30,6 +31,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ marginTop: '1rem', color: 'var(--warm-tan)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+              data-amplitude-explicit-click
               onClick={trackClick('Instagram Follow Clicked', { source_page: 'footer' })}
             >
               📸 @dandogdoesthings →
@@ -70,6 +72,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--teal)', marginTop: '0.5rem', fontWeight: '700' }}
+              data-amplitude-explicit-click
               onClick={trackClick('Donate Link Clicked', { source_page: 'footer', variant: 'chicago_col' })}
             >
               Anti-Cruelty Society →

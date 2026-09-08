@@ -75,6 +75,7 @@ export default function MembersLounge() {
                 supports the Anti-Cruelty Society of Chicago this year.
               </p>
               <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '0.5rem' }}
+                data-amplitude-explicit-click
                 onClick={trackClick('Outbound Link Clicked', { source_page: 'members_lounge', destination_domain: 'anticruelty.org', link_name: 'membership_impact' })}>
                 Visit ACS →
               </a>

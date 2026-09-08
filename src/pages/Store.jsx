@@ -58,7 +58,7 @@ export default function Store() {
               <p>Dan at the lakefront. Contemplating. Not explaining. Fine art print on 100lb archival paper. Ships flat. Arrives with Dan's silent energy intact.</p>
               <p>12×16 inches. Suitable for framing. Suitable for staring at when you also don't know what you're thinking about.</p>
               <div className="price">$35</div>
-              <button className="btn btn--tan btn--lg" onClick={() => handleAdd({ id: 'print-lmg', name: 'Lake Michigan Gaze Print', price: 35, color: '🔵' }, { is_featured: true })}>
+              <button className="btn btn--tan btn--lg" data-amplitude-explicit-click onClick={() => handleAdd({ id: 'print-lmg', name: 'Lake Michigan Gaze Print', price: 35, color: '🔵' }, { is_featured: true })}>
                 Add to Cart — $35
               </button>
             </div>
@@ -81,7 +81,7 @@ export default function Store() {
                   <div className="product-card__desc">{p.desc}</div>
                   <div className="product-card__footer">
                     <span className="product-card__price">${p.price}</span>
-                    <button className="btn btn--tan btn--sm" onClick={() => handleAdd(p)}>Add to Cart</button>
+                    <button className="btn btn--tan btn--sm" data-amplitude-explicit-click onClick={() => handleAdd(p)}>Add to Cart</button>
                   </div>
                 </div>
               </div>

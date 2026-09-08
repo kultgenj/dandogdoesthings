@@ -120,7 +120,7 @@ export default function Account() {
               Dan has acknowledged your return. He is not going to make a big deal about it.
             </p>
           </div>
-          <button className="btn btn--outline-white" onClick={handleSignOut}>Sign Out</button>
+          <button className="btn btn--outline-white" data-amplitude-explicit-click onClick={handleSignOut}>Sign Out</button>
         </div>
 
         <div className="account-grid">

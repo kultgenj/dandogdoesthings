@@ -69,14 +69,14 @@ function Lightbox({ photos, index, onClose, onNav }) {
       <div className="lightbox__overlay" onClick={onClose} />
       <div className="lightbox__inner">
         <button className="lightbox__close" onClick={onClose} aria-label="Close lightbox">✕</button>
-        <button className="lightbox__prev" onClick={() => onNav(-1)} aria-label="Previous photo">‹</button>
+        <button className="lightbox__prev" data-amplitude-explicit-click onClick={() => onNav(-1)} aria-label="Previous photo">‹</button>
         <div className="lightbox__content">
           {photo.src
             ? <img src={photo.src} alt={photo.alt} />
             : <ImgSlot alt={photo.alt} variant={`img-slot--landscape img-slot--${photo.color}`} style={{ maxWidth: 600, maxHeight: 480, margin: 'auto' }} />
           }
         </div>
-        <button className="lightbox__next" onClick={() => onNav(1)} aria-label="Next photo">›</button>
+        <button className="lightbox__next" data-amplitude-explicit-click onClick={() => onNav(1)} aria-label="Next photo">›</button>
         <div className="lightbox__caption">{photo.alt}</div>
       </div>
     </div>
@@ -137,6 +137,7 @@ export default function Gallery() {
               <button
                 key={cat.key}
                 className={`gallery-filter-btn${activeCategory === cat.key ? ' active' : ''}`}
+                data-amplitude-explicit-click
                 onClick={() => handleFilter(cat.key)}
               >
                 {cat.label}
@@ -156,6 +157,7 @@ export default function Gallery() {
                 <div
                   key={photo.id}
                   className={`gallery-item${photo.size === 'wide' ? ' gallery-item--wide' : ''}${photo.size === 'tall' ? ' gallery-item--tall' : ''}`}
+                  data-amplitude-explicit-click
                   onClick={() => openLightbox(i)}
                   role="button"
                   tabIndex={0}
@@ -197,6 +199,7 @@ export default function Gallery() {
               Every photo, every angle, every moment Dan has allowed to be documented. The complete archive.
             </p>
             <a href={GOOGLE_PHOTOS_URL} target="_blank" rel="noopener noreferrer" className="btn btn--tan btn--lg"
+              data-amplitude-explicit-click
               onClick={trackClick('Outbound Link Clicked', { source_page: 'gallery', destination_domain: 'photos.google.com', link_name: 'full_album' })}>
               Open Full Album →
             </a>
@@ -220,7 +223,7 @@ export default function Gallery() {
               { cat: 'zoomies',   label: '💨 Zoomies',       heading: 'The Running',   desc: "The lakefront. The scream. The oval. Documented in real time by people who tried to keep up.",      media: { type: 'video', src: '/images/Zoomie%20Dan.mp4' } },
               { cat: 'couch',     label: '🛋️ Couch Ops',     heading: 'Headquarters',  desc: "The teal couch. The red flannel. The aristocratic posture. The governance of soft surfaces.",      media: { type: 'image', src: '/images/Couch%20Dan.jpg', position: 'center 45%' } },
             ].map(c => (
-              <div className="card" key={c.cat} style={{ cursor: 'pointer' }} onClick={() => { handleFilter(c.cat); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+              <div className="card" key={c.cat} style={{ cursor: 'pointer' }} data-amplitude-explicit-click onClick={() => { handleFilter(c.cat); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
                 <div style={{ aspectRatio: '16/10', overflow: 'hidden', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
                   {c.media.type === 'video' ? (
                     <video

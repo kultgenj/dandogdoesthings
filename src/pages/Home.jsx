@@ -145,7 +145,7 @@ export default function Home() {
                   <div className="product-card__desc">{p.desc}</div>
                   <div className="product-card__footer">
                     <span className="product-card__price">${p.price}</span>
-                    <button className="btn btn--tan btn--sm" onClick={() => handleAdd(p)}>Add to Cart</button>
+                    <button className="btn btn--tan btn--sm" data-amplitude-explicit-click onClick={() => handleAdd(p)}>Add to Cart</button>
                   </div>
                 </div>
               </div>
@@ -202,6 +202,7 @@ export default function Home() {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
               <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white btn--lg"
+                data-amplitude-explicit-click
                 onClick={trackClick('Donate Link Clicked', { source_page: 'home', variant: 'ac_callout' })}>
                 Donate to Anti-Cruelty →
               </a>
