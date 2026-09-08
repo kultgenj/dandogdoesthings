@@ -39,10 +39,20 @@ export default function MembersJoin() {
     if (submittingRef.current) return
     setError('')
     if (card.number.replace(/\s/g, '') !== '4242424242424242') {
+      amplitude.track('Order Failed', {
+        order_type: 'membership', currency: 'USD', error_reason: 'invalid_card',
+        failure_stage: 'payment_validation', source_page: 'members_join', is_test: true,
+        products: [product(tier, 'membership', { billing_interval: 'year' })],
+      })
       setError('Use test card: 4242 4242 4242 4242')
       return
     }
     if (!card.name.trim() || !card.exp.trim() || !card.cvv.trim()) {
+      amplitude.track('Order Failed', {
+        order_type: 'membership', currency: 'USD', error_reason: 'missing_fields',
+        failure_stage: 'payment_validation', source_page: 'members_join', is_test: true,
+        products: [product(tier, 'membership', { billing_interval: 'year' })],
+      })
       setError('Please complete all payment fields.')
       return
     }

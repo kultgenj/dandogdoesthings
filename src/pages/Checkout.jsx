@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { useAuth } from '../context/AuthContext'
-import amplitude from '../amplitude.js'
+import amplitude, { trackClick } from '../amplitude.js'
 import { products, money } from '../analytics/schema.js'
 
 const STEPS = ['Shipping', 'Payment', 'Confirm']
@@ -207,7 +207,8 @@ function OrderSummary({ cart, cartTotal, shippingMethod }) {
       <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
         <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
           🐾 A portion of every sale supports the<br />
-          <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}>
+          <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}
+            onClick={trackClick('Outbound Link Clicked', { source_page: 'checkout', destination_domain: 'anticruelty.org', link_name: 'order_summary' })}>
             Anti-Cruelty Society of Chicago
           </a>
         </p>

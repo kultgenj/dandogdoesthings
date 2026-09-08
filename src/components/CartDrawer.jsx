@@ -29,6 +29,15 @@ export default function CartDrawer({ isOpen, onClose }) {
     navigate('/checkout')
   }
 
+  const clearCartByUser = () => {
+    amplitude.track('Cart Cleared', {
+      products: products(cart),
+      item_count: cart.reduce((sum, item) => sum + item.qty, 0),
+      cart_value: cartTotal,
+    })
+    clearCart()
+  }
+
   return (
     <>
       <div
@@ -93,7 +102,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             <button
               className="btn btn--outline-black btn--sm"
               style={{ width: '100%', justifyContent: 'center', marginTop: '0.75rem' }}
-              onClick={clearCart}
+              onClick={clearCartByUser}
             >
               Clear Cart
             </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import amplitude from '../amplitude.js'
@@ -8,10 +8,12 @@ export default function SignUp() {
   const { signUp } = useAuth()
   const { showToast } = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const redirectTo = location.state?.from || '/account'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,7 +32,7 @@ export default function SignUp() {
       amplitude.setUserId(signed.id)
       amplitude.track('Sign Up Completed', { signup_method: 'email' })
       showToast(`Welcome to Dan's world, ${form.name.split(' ')[0]} 🐾`)
-      navigate('/account', { replace: true })
+      navigate(redirectTo, { replace: true })
     } catch (err) {
       amplitude.track('Sign Up Failed', { error_reason: err.message })
       setError(err.message)
@@ -101,7 +103,7 @@ export default function SignUp() {
 
           <div className="auth-links">
             <span>
-              Already have an account? <Link to="/signin">Sign in</Link>
+              Already have an account? <Link to="/signin" state={{ from: redirectTo }}>Sign in</Link>
             </span>
           </div>
         </form>

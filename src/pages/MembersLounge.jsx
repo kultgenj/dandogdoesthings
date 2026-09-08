@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import amplitude from '../amplitude.js'
+import amplitude, { trackClick } from '../amplitude.js'
 import { product } from '../analytics/schema.js'
 import ImgSlot from '../components/ImgSlot'
 import { getTier } from '../data/tiers'
@@ -74,7 +74,8 @@ export default function MembersLounge() {
                 <strong style={{ color: 'var(--teal)' }}>${m.acs_donation.toFixed(2)}</strong> of your membership
                 supports the Anti-Cruelty Society of Chicago this year.
               </p>
-              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '0.5rem' }}>
+              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '0.5rem' }}
+                onClick={trackClick('Outbound Link Clicked', { source_page: 'members_lounge', destination_domain: 'anticruelty.org', link_name: 'membership_impact' })}>
                 Visit ACS →
               </a>
             </div>

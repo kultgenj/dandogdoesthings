@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import ImgSlot from '../components/ImgSlot'
-import amplitude from '../amplitude.js'
+import amplitude, { trackClick } from '../amplitude.js'
 
 const GOOGLE_PHOTOS_URL = 'https://photos.google.com/share/AF1QipMH1lnWgJkZH2FUZxeIUPZYhmTMzo7WVZ1KntczVqmikEa_LRVuFXdV3xljwZVTfA?key=ellDVFdVQjJqMERRY05xT2JMcnhiUzlLV05JbWxR'
 
@@ -196,7 +196,8 @@ export default function Gallery() {
             <p style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 520, marginInline: 'auto', marginBottom: '2rem' }}>
               Every photo, every angle, every moment Dan has allowed to be documented. The complete archive.
             </p>
-            <a href={GOOGLE_PHOTOS_URL} target="_blank" rel="noopener noreferrer" className="btn btn--tan btn--lg">
+            <a href={GOOGLE_PHOTOS_URL} target="_blank" rel="noopener noreferrer" className="btn btn--tan btn--lg"
+              onClick={trackClick('Outbound Link Clicked', { source_page: 'gallery', destination_domain: 'photos.google.com', link_name: 'full_album' })}>
               Open Full Album →
             </a>
             <p style={{ marginTop: '1.5rem', fontSize: '0.82rem', color: 'rgba(255,255,255,0.35)' }}>

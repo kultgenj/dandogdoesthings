@@ -80,7 +80,7 @@ export default function SignIn() {
           <div className="auth-links">
             <Link to="/reset-password">Forgot password?</Link>
             <span>
-              New here? <Link to="/signup">Create an account</Link>
+              New here? <Link to="/signup" state={{ from: redirectTo }}>Create an account</Link>
             </span>
           </div>
         </form>
