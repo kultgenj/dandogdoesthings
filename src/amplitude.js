@@ -1,5 +1,5 @@
 import { createInstance } from '@amplitude/unified'
-import { routePath, sessionClassifier } from './analytics/schema.js'
+import { pageTitle, routePath, sessionClassifier } from './analytics/schema.js'
 
 const ALL_KEY = '4acddc9bd2981674d9732c8800b491cf'
 const HUMAN_KEY = '1ace93105d2914a01a1e207e93f070e4'
@@ -62,7 +62,9 @@ all.add({
     const bot = classify(event.session_id, location)
     event.event_properties = { ...event.event_properties,
       '[Amplitude] Page Location': location,
-      '[Amplitude] Page Path': routePath(location), ampli_bot: bot,
+      '[Amplitude] Page Path': routePath(location),
+      '[Amplitude] Page Title': pageTitle(routePath(location)),
+      ampli_bot: bot,
     }
     return event
   },

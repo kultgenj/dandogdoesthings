@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
@@ -228,11 +228,6 @@ export default function Checkout() {
   const [shipping, setShipping] = useState({ shipping: 'standard' })
   const [loading, setLoading]   = useState(false)
   const [orderNum, setOrderNum] = useState('')
-
-  useEffect(() => {
-    document.title = 'Checkout — Dan Dog Does Things'
-    return () => { document.title = 'Dan Dog Does Things' }
-  }, [])
 
   // Checkout Started — fires once per checkout session when cart has items
   const startedRef = useRef(false)

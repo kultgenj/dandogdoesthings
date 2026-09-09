@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
 import { AuthProvider } from './context/AuthContext'
@@ -22,10 +21,14 @@ import Wall from './pages/Wall'
 import Members from './pages/Members'
 import MembersJoin from './pages/MembersJoin'
 import MembersLounge from './pages/MembersLounge'
+import { pageTitle } from './analytics/schema.js'
 
-function ScrollToTop() {
+function RouteEffects() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  useLayoutEffect(() => {
+    document.title = pageTitle(pathname)
+    window.scrollTo(0, 0)
+  }, [pathname])
   return null
 }
 
@@ -34,7 +37,7 @@ function Layout() {
 
   return (
     <>
-      <ScrollToTop />
+      <RouteEffects />
       <Header onCartOpen={() => setCartOpen(true)} />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <main>
