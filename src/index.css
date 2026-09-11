@@ -1375,3 +1375,24 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
 /* ── Animations ──────────────────────────────────────────── */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade-up { animation: fadeUp 0.6s ease both; }
+
+/* Bundled inquiry treatment */
+.modal--bundled { max-width: 660px; }
+.inquiry-packages { border: 1px solid #57945c; border-radius: 10px; padding: 0.75rem; margin: 0 0 1.5rem; min-width: 0; }
+.inquiry-packages legend { padding: 0 0.4rem; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+.inquiry-package { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.25rem; cursor: pointer; }
+.inquiry-package input { width: 20px; height: 20px; flex-shrink: 0; accent-color: #47834c; }
+.inquiry-package img { object-fit: contain; flex-shrink: 0; }
+.inquiry-package__icon { width: 40px; flex-shrink: 0; text-align: center; font-size: 1.8rem; }
+.inquiry-package__copy { flex: 1; min-width: 0; }
+.inquiry-package__copy strong { display: block; font-size: 0.95rem; }
+.inquiry-package__copy small { display: block; color: #606068; line-height: 1.4; margin-top: 0.2rem; }
+.inquiry-package__status { color: #376a3b; background: #e5efe6; border-radius: 7px; padding: 0.35rem 0.5rem; font-size: 0.8rem; }
+.inquiry-packages p { color: #606068; font-size: 0.85rem; margin-top: 0.5rem; }
+.inquiry-package:focus-within { outline: 2px solid #376a3b; outline-offset: 2px; border-radius: 4px; }
+.modal--bundled button:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (max-width: 480px) {
+  .inquiry-package { gap: 0.5rem; }
+  .inquiry-package__status { display: none; }
+  .modal--bundled { padding: 2rem 1rem; }
+}

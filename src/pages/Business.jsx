@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import InquiryModal from '../components/InquiryModal'
-import amplitude from '../amplitude.js'
+import amplitude, { inquiryVariant } from '../amplitude.js'
 import { product } from '../analytics/schema.js'
 
 const SERVICES = [
@@ -43,8 +43,11 @@ const PROCESS_STEPS = [
 
 export default function Business() {
   const [activeService, setActiveService] = useState(null)
+  const [variant, setVariant] = useState('control')
 
   const openInquiry = (service) => {
+    const assignedVariant = inquiryVariant()
+    setVariant(assignedVariant)
     amplitude.track('Lead Form Started', {
       products: [product(service, 'service')],
       source_page: 'business',
@@ -85,7 +88,7 @@ export default function Business() {
           <div className="services-grid">
             {SERVICES.map(s => (
               <div className="service-card" key={s.id}>
-                <div className="service-card__icon">{s.icon}</div>
+                <div className="service-card__icon">{s.id === 'consulting' ? <img src={`${import.meta.env.BASE_URL}favicon.png`} alt="Dan" width="48" height="48" /> : s.icon}</div>
                 <div className="service-card__title">{s.title}</div>
                 <div className="service-card__tagline">{s.tagline}</div>
                 <p>{s.desc}</p>
@@ -175,7 +178,7 @@ export default function Business() {
         </div>
       </section>
 
-      <InquiryModal service={activeService} onClose={() => setActiveService(null)} />
+      <InquiryModal service={activeService} services={SERVICES} variant={variant} onClose={() => setActiveService(null)} />
     </>
   )
 }

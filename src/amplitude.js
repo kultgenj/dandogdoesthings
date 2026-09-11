@@ -97,8 +97,28 @@ if (!localValidation && window.WebExperiment?.initialize) {
   all.add(window.webExperiment.plugin())
 }
 
-void all.initAll(ALL_KEY, {
+// The experiment client sends X-Amp-Exp-User as unpadded base64, which the
+// evaluation server rejects at some payload lengths (returns {} instead of
+// variants), so remote assignments silently never arrive.
+const experimentHttpClient = {
+  async request(requestUrl, method, headers, data, timeoutMillis) {
+    const fixed = { ...headers }
+    const user = fixed['X-Amp-Exp-User']
+    if (user) fixed['X-Amp-Exp-User'] = user + '='.repeat((4 - (user.length % 4)) % 4)
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), timeoutMillis)
+    try {
+      const response = await fetch(requestUrl, {
+        method, headers: fixed, body: data ?? undefined, signal: controller.signal,
+      })
+      return { status: response.status, body: await response.text() }
+    } finally { clearTimeout(timer) }
+  },
+}
+
+const initialized = all.initAll(ALL_KEY, {
   instanceName: 'secondary',
+  experiment: { httpClient: experimentHttpClient },
   analytics: {
     transportProvider, flushIntervalMillis: 250,
     fetchRemoteConfig: !localValidation,
@@ -119,6 +139,10 @@ void all.initAll(ALL_KEY, {
   sessionReplay: { sampleRate: localValidation ? 0 : 1 },
   engagement: { skip: localValidation },
 })
+// Fetch feature assignments before visitors reach the inquiry form.
+void initialized.then(() => {
+  if (!localValidation) return all.experiment()?.start()
+}).catch(() => { /* Unavailable experiment service keeps the control form. */ })
 
 const track = (event, properties = {}, options) => {
   const location = window.location.href
@@ -130,4 +154,17 @@ const track = (event, properties = {}, options) => {
 }
 
 export const trackClick = (event, properties) => () => track(event, properties)
+// Read only when opening an inquiry: variant() records exposure and the result
+// stays fixed for that form, even if remote flags update while it is open.
+export function inquiryVariant() {
+  if (import.meta.env.DEV && import.meta.env.VITE_INQUIRY_VARIANT) {
+    return import.meta.env.VITE_INQUIRY_VARIANT === 'treatment' ? 'treatment' : 'control'
+  }
+  try {
+    return all.experiment()?.variant('business-multi-package-inquiry', 'control').value === 'treatment'
+      ? 'treatment' : 'control'
+  } catch {
+    return 'control'
+  }
+}
 export default { track, setUserId: all.setUserId }
