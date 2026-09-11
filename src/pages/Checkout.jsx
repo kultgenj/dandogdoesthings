@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { useToast } from '../context/ToastContext'
+import { saveGuestReceipt } from '../data/receipts.js'
 import { useAuth } from '../context/AuthContext'
 import amplitude, { trackClick } from '../amplitude.js'
 import { products, money } from '../analytics/schema.js'
@@ -222,12 +222,11 @@ function OrderSummary({ cart, cartTotal, shippingMethod }) {
 
 export default function Checkout() {
   const { cart, cartTotal, clearCart } = useCart()
-  const { showToast } = useToast()
+  const navigate = useNavigate()
   const { user, saveOrder } = useAuth()
   const [step, setStep]       = useState(1)
   const [shipping, setShipping] = useState({ shipping: 'standard' })
   const [loading, setLoading]   = useState(false)
-  const [orderNum, setOrderNum] = useState('')
 
   // Checkout Started — fires once per checkout session when cart has items
   const startedRef = useRef(false)
@@ -259,6 +258,7 @@ export default function Checkout() {
       shipping: shippingCost,
       total: cartTotal + shippingCost,
       shippingInfo: shipping,
+      placedAt: new Date().toISOString(),
     }
     setTimeout(() => {
       amplitude.track('Order Completed', {
@@ -268,10 +268,10 @@ export default function Checkout() {
         shipping_method: shipping.shipping, is_authenticated: !!user, source_page: 'checkout', is_test: true,
         products: products(orderSnapshot.items, true),
       })
-      setOrderNum(orderSnapshot.orderNumber)
       if (user) saveOrder(orderSnapshot)
+      else saveGuestReceipt(orderSnapshot)
       clearCart()
-      setStep(3)
+      navigate(`/orders/${orderSnapshot.orderNumber}`, { state: { order: orderSnapshot } })
       setLoading(false)
     }, 1400)
   }
@@ -282,43 +282,6 @@ export default function Checkout() {
         <Link to="/store" className="back-link">← Back to Store</Link>
         <StepsBar current={step} />
 
-        {step === 3 ? (
-          /* Confirmation */
-          <div className="confirmation">
-            <div className="confirmation__icon">🐾</div>
-            <h1 style={{ color: 'var(--teal)' }}>Order Confirmed.</h1>
-            <p style={{ fontSize: '1.1rem', color: 'rgba(10,10,10,0.6)' }}>
-              Dan has acknowledged your purchase from the couch. He did not get up, but his ears moved.
-              That means a lot.
-            </p>
-            <p style={{ fontSize: '0.9rem', color: 'var(--mid-gray)' }}>
-              Order number: <strong style={{ color: 'var(--jet-black)' }}>{orderNum}</strong>
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginTop: '2.5rem' }}>
-              {user
-                ? <Link to="/account" className="btn btn--tan btn--lg">View in Your Account →</Link>
-                : <Link to="/store"   className="btn btn--tan btn--lg">Keep Shopping →</Link>
-              }
-              <Link to="/" className="btn btn--outline-black btn--lg">Back Home</Link>
-            </div>
-            {!user && (
-              <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'rgba(10,10,10,0.55)' }}>
-                💡 <Link to="/signup" style={{ color: 'var(--warm-tan)', fontWeight: 700 }}>Create an account</Link> to save your order history for next time.
-              </p>
-            )}
-            <div style={{ marginTop: '3rem', padding: '1.5rem', background: 'rgba(58,158,143,0.08)', border: '2px solid rgba(58,158,143,0.25)', borderRadius: 'var(--radius-md)' }}>
-              <p style={{ color: 'var(--teal)', fontWeight: 700, fontSize: '0.9rem' }}>🐾 Your purchase matters beyond Dan's couch.</p>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(10,10,10,0.6)', marginTop: '0.4rem' }}>
-                A portion of every sale goes to the Anti-Cruelty Society of Chicago, where Dan began his journey.
-              </p>
-              <a href="https://www.anticruelty.org" target="_blank" rel="noopener noreferrer" className="btn btn--teal btn--sm" style={{ marginTop: '1rem' }}
-                data-amplitude-explicit-click
-                onClick={() => amplitude.track('Donate Link Clicked', { source_page: 'checkout', variant: 'confirmation' })}>
-                Donate to Anti-Cruelty →
-              </a>
-            </div>
-          </div>
-        ) : (
           <div className="checkout-layout">
             <div>
               {step === 1 && (
@@ -338,7 +301,6 @@ export default function Checkout() {
             </div>
             <OrderSummary cart={cart} cartTotal={cartTotal} shippingMethod={shipping.shipping} />
           </div>
-        )}
       </div>
     </div>
   )

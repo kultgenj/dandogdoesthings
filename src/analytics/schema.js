@@ -18,7 +18,7 @@ const PAGE_TITLES = {
   '/members/lounge': 'Members Lounge — Dan Dog Does Things',
 }
 
-export const pageTitle = path => PAGE_TITLES[path] || 'Dan Dog Does Things'
+export const pageTitle = path => path.startsWith('/orders/') ? 'Order Confirmation — Dan Dog Does Things' : PAGE_TITLES[path] || 'Dan Dog Does Things'
 
 export function product(item, type = 'merchandise', extra = {}) {
   return { product_id: item.id, name: item.name || item.title, type,

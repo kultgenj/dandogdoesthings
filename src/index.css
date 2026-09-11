@@ -688,6 +688,14 @@ p  { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.75; }
 
 .confirmation { text-align: center; max-width: 560px; margin-inline: auto; padding: clamp(3rem, 8vw, 6rem) 1rem; }
 .confirmation__icon { font-size: 5rem; margin-bottom: 1rem; }
+.receipt-details { text-align: left; padding: 1.5rem; margin-block: 2rem; background: #fff; border: 1px solid var(--light-gray); border-radius: var(--radius-md); overflow-wrap: anywhere; }
+.receipt-details h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+.receipt-details p { margin-top: 1rem; }
+.receipt-details .order-card__items li { gap: 1rem; }
+.receipt-details .order-card__items li span:last-child { white-space: nowrap; }
+.confirmation-story { margin-top: 3rem; padding: clamp(1rem, 4vw, 1.5rem); background: rgba(58,158,143,0.08); border: 2px solid rgba(58,158,143,0.25); border-radius: var(--radius-md); }
+.confirmation-story h2 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+.confirmation-story p { font-size: 0.95rem; color: rgba(10,10,10,0.75); }
 
 /* ── Gallery ─────────────────────────────────────────────── */
 .filter-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
+import { guestReceipts } from '../data/receipts.js'
 
 const PHYSICAL_PRODUCTS = [
   { id: 'tote-01',          name: 'The Distinguished Gentleman Tote', desc: "Heavy canvas. Dan's portrait. Your grocery haul. His dignity, doing the heavy lifting.",           price: 28, src: '/images/dan-amplitude-sign.jpg' },
@@ -34,6 +35,7 @@ export default function Store() {
       {/* ── STORE HERO ────────────────────────────────────── */}
       <section className="store-header">
         <div className="container">
+          {guestReceipts().length > 0 && <Link to={`/orders/${guestReceipts()[0].orderNumber}`} className="btn btn--outline-white">View latest guest receipt →</Link>}
           <span className="section-eyebrow" style={{ color: 'var(--warm-tan)' }}>Dan's Official Store</span>
           <h1>The <span className="accent">Dan Dog</span><br />Collection</h1>
           <p>Merchandise for people who understand Dan. And even for people who don't — yet.</p>

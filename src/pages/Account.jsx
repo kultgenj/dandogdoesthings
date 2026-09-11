@@ -89,6 +89,7 @@ function OrderCard({ order }) {
           </li>
         ))}
       </ul>
+      <Link to={`/orders/${order.orderNumber}`} className="back-link" style={{ marginTop: '1rem' }}>View receipt →</Link>
     </div>
   )
 }

@@ -11,6 +11,7 @@ import Things from './pages/Things'
 import Store from './pages/Store'
 import Business from './pages/Business'
 import Checkout from './pages/Checkout'
+import OrderConfirmation from './pages/OrderConfirmation'
 import Gallery from './pages/Gallery'
 import AntiCruelty from './pages/AntiCruelty'
 import SignIn from './pages/SignIn'
@@ -47,6 +48,7 @@ function Layout() {
           <Route path="/store"        element={<Store />} />
           <Route path="/business"     element={<Business />} />
           <Route path="/checkout"     element={<Checkout />} />
+          <Route path="/orders/:orderNumber" element={<OrderConfirmation />} />
           <Route path="/gallery"      element={<Gallery />} />
           <Route path="/anti-cruelty" element={<AntiCruelty />} />
           <Route path="/signin"        element={<SignIn />} />
